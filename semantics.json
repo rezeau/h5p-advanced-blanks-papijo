@@ -220,10 +220,6 @@
                         "label": "- 3 (three highlights before the blank)"
                       },
                       {
-                        "value": "-4",
-                        "label": "- 4 (three highlights before the blank)"
-                      },
-                      {
                         "value": "1",
                         "label": "+ 1 (right after the blank)"
                       },
@@ -234,10 +230,6 @@
                       {
                         "value": "3",
                         "label": "+ 3 (three highlights after the blank)"
-                      },
-                      {
-                        "value": "4",
-                        "label": "+ 4 (three highlights after the blank)"
                       }
                     ],
                     "default": "-1"
@@ -401,11 +393,11 @@
         "options": [
           {
             "value": "alternatives",
-            "label": "The incorrect answers entered for the blank"
+            "label": "The correct and incorrect answers entered for the blank"
           },
           {
             "value": "all",
-            "label": "The correct answers of all other blanks"
+            "label": "The correct answers of the blank and all the other blanks"
           }
         ],
         "default": "alternatives"
@@ -413,17 +405,22 @@
       {
         "name": "selectAlternativeRestriction",
         "type": "number",
-        "label": "Maximum number of alternatives of other blanks offered for selection",
+        "label": "Maximum number of total alternatives offered for selection",
         "description": "Enter 0 to set no limit.",
         "min": 0,
         "step": 1,
         "default": 5,
         "widget": "showWhen",
         "showWhen": {
+        "type": "and",
           "rules": [
             {
               "field": "mode",
               "equals": "selection"
+            },
+            {
+              "field": "selectAlternatives",
+              "equals": "all"
             }
           ]
         }
@@ -467,8 +464,7 @@
         "default": "mistake",
         "widget": "showWhen",
         "showWhen": {
-        "type": "and", 
-          "rules": [
+        "rules": [
             {
               "field": "mode",
               "equals": "typing"
@@ -591,7 +587,12 @@
         "default": false,
         "widget": "showWhen",
         "showWhen": {
+        "type": "and",
           "rules": [
+            {
+              "field": "enableRetry",
+              "equals": true
+            },
             {
               "field": "autoCheck",
               "equals": false
