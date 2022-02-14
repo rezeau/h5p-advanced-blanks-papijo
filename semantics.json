@@ -253,7 +253,7 @@
         "type": "list",
         "label": "Snippet list",
         "importance": "high",
-        "description": "Snippets are texts that can be reused in feedback texts by inserting @snippetname into the it.",
+        "description": "Snippets are texts that can be reused in feedback texts by inserting @snippetname into the text.",
         "entity": "snippet",
         "optional": true,
         "min": 0,
