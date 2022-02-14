@@ -281,9 +281,14 @@ export class ClozeController {
     for (var blank of this.cloze.blanks) {
       var blankRactive = this.blankRactives[blank.id];
       if (blank.isCorrect || blank.isShowingSolution) {
-        blank.currTextLength = blank.enteredText.length + 1.5;        
+        blank.currTextLength = blank.enteredText.length + 1.5;
       } else  {
-        blank.currTextLength = blank.minTextLength;
+        if (blank.enteredText) {
+          // Auto grow input field to accomodate entered text!
+          blank.currTextLength = Math.max(blank.minTextLength, blank.enteredText.length + 2);
+        } else {
+          blank.currTextLength = blank.minTextLength;
+        }
       }
       blankRactive.set("blank", blank);
     }
