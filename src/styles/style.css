@@ -28,7 +28,7 @@
 }
 
 .h5p-advanced-blanks .blank .h5p-text-input {
-    font-family: H5PDroidSans, sans-serif;
+    font-family: "Lucida Console", Courier, monospace;
     font-size: 1em;
     border-radius: 0.25em;
     border: 1px solid #a0a0a0;

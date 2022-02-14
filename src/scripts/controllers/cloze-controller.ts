@@ -281,7 +281,7 @@ export class ClozeController {
     for (var blank of this.cloze.blanks) {
       var blankRactive = this.blankRactives[blank.id];
       if (blank.isCorrect || blank.isShowingSolution) {
-        blank.currTextLength = blank.enteredText.length;;
+        blank.currTextLength = blank.enteredText.length + 1.5;        
       } else  {
         blank.currTextLength = blank.minTextLength;
       }
@@ -321,7 +321,7 @@ export class ClozeController {
     for (var blank of this.cloze.blanks) {
       result.push(blank.getCorrectAnswers());
     }
-
     return result;
   }
+ 
 }
