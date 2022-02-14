@@ -60,7 +60,8 @@ export class Blank extends ClozeElement {
     if (this.settings.clozeType === ClozeType.Select && this.settings.selectAlternatives === SelectAlternatives.Alternatives) {
       this.loadChoicesFromOwnAlternatives();
     }
-    this.calculateMinTextLength();
+    this.minTextLength = 8;
+    this.currTextLength = this.minTextLength;
   }
 
   public addCorrectAnswer(answer: Answer) {
@@ -79,12 +80,7 @@ export class Blank extends ClozeElement {
     this.hint = message;
     this.hasHint = this.hint.text !== "";
   }
-/*
-  public setCorrectFeedback(correctFeedback: string) {
-    this.correctFeedback = correctFeedback;
-    this.hasCorrectFeedback = this.correctFeedback !== "";
-  }
-*/
+
   /**
    * Adds the incorrect answer to the list.
    * @param text - What the user must enter.
@@ -93,27 +89,6 @@ export class Blank extends ClozeElement {
   public addIncorrectAnswer(text: string, reaction: string, showHighlight: boolean, highlight: number): void {
     this.incorrectAnswers.push(
       new Answer(text, reaction, showHighlight, highlight, this.settings));
-  }
-
-  /**
-   * Returns how many characters the input box must have to allow for all correct answers.
-   */
-  // TODO: refactor
-  private calculateMinTextLength(): void {
-    var answers: string[] = new Array();
-    for (let correctAnswer of this.correctAnswers) {
-      answers.push(getLongestString(correctAnswer.alternatives));
-    }
-
-    if (this.settings.clozeType === ClozeType.Select) {
-      for (let incorrectAnswer of this.incorrectAnswers) {
-        answers.push(getLongestString(incorrectAnswer.alternatives));
-      }
-    }
-    var longestAnswer = getLongestString(answers);
-    var l = longestAnswer.length;
-    this.minTextLength = Math.max(10, l - (l % 10) + 10);
-    this.currTextLength = this.minTextLength;
   }
 
   /**

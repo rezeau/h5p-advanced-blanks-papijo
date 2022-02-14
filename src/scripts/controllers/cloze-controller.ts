@@ -281,7 +281,8 @@ export class ClozeController {
     for (var blank of this.cloze.blanks) {
       var blankRactive = this.blankRactives[blank.id];
       if (blank.isCorrect || blank.isShowingSolution) {
-        blank.currTextLength = blank.enteredText.length + 1.5;
+        let tickSpacer = Number(blank.isCorrect) * 1.5;
+        blank.currTextLength = blank.enteredText.length + tickSpacer;
       } else  {
         if (blank.enteredText) {
           // Auto grow input field to accomodate entered text!
