@@ -5,7 +5,7 @@
   "minorVersion": 1,
   "patchVersion": 1,
   "runnable": 1,
-  "author": "S. Rettig",
+  "author": "S. Rettig & Joseph Rézeau",
   "license": "MIT",
   "machineName": "H5P.AdvancedBlanksPapiJo",
   "coreApi": {

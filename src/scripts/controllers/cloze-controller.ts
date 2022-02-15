@@ -280,13 +280,17 @@ export class ClozeController {
 
     for (var blank of this.cloze.blanks) {
       var blankRactive = this.blankRactives[blank.id];
+      let tickSpacer = 0;
       if (blank.isCorrect || blank.isShowingSolution) {
-        let tickSpacer = Number(blank.isCorrect) * 1.5;
+        tickSpacer = Number(blank.isCorrect) * 1.5;
         blank.currTextLength = blank.enteredText.length + tickSpacer;
       } else  {
         if (blank.enteredText) {
           // Auto grow input field to accomodate entered text!
-          blank.currTextLength = Math.max(blank.minTextLength, blank.enteredText.length + 2);
+          if (blank.hasHint && blank.isError) {
+            tickSpacer = 2;
+          }
+          blank.currTextLength = Math.max(blank.minTextLength, blank.enteredText.length + 2 + tickSpacer);
         } else {
           blank.currTextLength = blank.minTextLength;
         }
