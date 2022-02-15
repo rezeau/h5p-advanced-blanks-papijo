@@ -287,7 +287,7 @@ export class ClozeController {
       } else  {
         if (blank.enteredText) {
           // Auto grow input field to accomodate entered text!
-          if (blank.hasHint && blank.isError) {
+          if (blank.hasHint && (blank.isError || blank.isRetry)) {
             tickSpacer = 2;
           }
           blank.currTextLength = Math.max(blank.minTextLength, blank.enteredText.length + 2 + tickSpacer);
