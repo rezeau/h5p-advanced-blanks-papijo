@@ -1,4 +1,5 @@
-﻿.h5p-advanced-blanks {
+﻿@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@300&display=swap');
+.h5p-advanced-blanks {
     position: relative;
 }
 
@@ -28,7 +29,7 @@
 }
 
 .h5p-advanced-blanks .blank .h5p-text-input {
-    font-family: "Lucida Console", Courier, monospace;
+    font-family: 'Roboto Mono', 'Lucida Console', Courier, monospace;
     font-size: 1em;
     border-radius: 0.25em;
     border: 1px solid #a0a0a0;
@@ -86,6 +87,7 @@ select.h5p-text-input {
 
 .h5p-advanced-blanks .blank.correct .h5p-text-input {
     background: #9dd8bb;
+    background: #9dd8bb70;
     border: 1px solid #9dd8bb;
     color: #255c41;
 }

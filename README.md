@@ -9,6 +9,11 @@ This is an advanced 'Fill the blanks' content type for h5p. In addition to most 
 
 It's main use is for foreign language learning, where you can give the users individual hints, why certain tenses or word forms can't be used in this case. While it is possible to have a 'Check' button at the end, it makes more sense to use the auto-check setting as the user is guided through the 'fill the blanks' exercise blank by blank.
 
+## This is the 'papi Jo' version of Sebastian's Advanced Fill the Blanks
+It's a work in progress, with a number of new features, pending their eventual integration into Sebastian's project.
+The most notable new feature being the use of Regular Expressions to ananlyse the student's answers.
+For examples, tutorial and more information, go to https://www.rezeau.org/drupal/
+
 ## Architecture
 
 This content type uses parts of h5p-blanks but is not based on it, as it was ported over from a widget written by the author for LearningApps.org. It uses a MVC style architecture with Ractive as the library responsible for creating the views. It is written in TypeScript.
