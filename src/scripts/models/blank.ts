@@ -18,6 +18,7 @@ export class Blank extends ClozeElement {
   choices: string[];
   hasHint: boolean;
   hasCorrectFeedback: boolean;
+  tipTitle: string;
 
   // viewmodel stuff
 
@@ -79,6 +80,7 @@ export class Blank extends ClozeElement {
   public setHint(message: Message) {
     this.hint = message;
     this.hasHint = this.hint.text !== "";
+    this.tipTitle = this.localization.getTextFromLabel(LocalizationLabels.tipButton);
   }
 
   /**

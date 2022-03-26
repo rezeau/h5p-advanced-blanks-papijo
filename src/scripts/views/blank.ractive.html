@@ -26,7 +26,7 @@
               on-click="@this.fire('showHint', blank)" 
               on-enter="@this.fire('showHint', blank)" 
               on-blur="@this.fire('checkBlank', blank, 'blur')" 
-              class="joubel-tip-container" title="Tip" aria-label="Tip" aria-expanded="true" role="button" tabindex="0"><span class="joubel-icon-tip-normal "><span class="h5p-icon-shadow"></span><span class="h5p-icon-speech-bubble"></span><span class="h5p-icon-info"></span></span></span>
+              class="joubel-tip-container" title="{{blank.tipTitle}}" aria-label="{{blank.tipTitle}}" aria-expanded="true" role="button" tabindex="0"><span class="joubel-icon-tip-normal "><span class="h5p-icon-shadow"></span><span class="h5p-icon-speech-bubble"></span><span class="h5p-icon-info"></span></span></span>
           </span>
         {{/unless}}
       {{/if}}
@@ -52,7 +52,7 @@
               on-click="@this.fire('showHint', blank)" 
               on-enter="@this.fire('showHint', blank)"
               class="h5p-tip-container">
-                <span class="joubel-tip-container" title="Tip" aria-label="Tip" aria-expanded="true" role="button" tabindex="0"><span class="joubel-icon-tip-normal "><span class="h5p-icon-shadow"></span><span class="h5p-icon-speech-bubble"></span><span class="h5p-icon-info"></span></span></span>
+                <span class="joubel-tip-container" title="{{blank.tipTitle}}" aria-label="{{blank.tipTitle}}" aria-expanded="true" role="button" tabindex="0"><span class="joubel-icon-tip-normal "><span class="h5p-icon-shadow"></span><span class="h5p-icon-speech-bubble"></span><span class="h5p-icon-info"></span></span></span>
             </span>
           {{/unless}}
       {{/if}}
