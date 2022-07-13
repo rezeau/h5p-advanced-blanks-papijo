@@ -195,6 +195,11 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
         this.setVideo(media);
       }
     }
+    else if (type === 'H5P.Audio') {
+      if (media.params.files) {
+        this.setAudio(media);
+      }
+    }
   }
 
   private registerButtons() {
