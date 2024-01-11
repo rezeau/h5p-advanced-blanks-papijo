@@ -23,7 +23,7 @@
         {
           "label": "Texte à trous",
           "important": {
-            "description": "<ul><li>Tutoriel & Exemples: <a href=\"http://www.rezeau.org/drupal/\" target=\"_blank\" rel=\"noopener\">Papi Jo's Drupal test site</a></span></li><li>Blanks must be marked with __________ (three or more underscores).</li><li>Do not put the solutions into the text.</li></ul>"
+            "description": "<ul><li>Tutoriel & Exemples: <a href=\"http://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Papi Jo's H5P Moodle site</a></span></li><li>Les blancs doivent être signalés par __________ (trois ou plusieurs traits de soulignement). </li><li>N'insérez pas les solutions dans le texte.</li></ul>"
           },
           "description": ""
         },
