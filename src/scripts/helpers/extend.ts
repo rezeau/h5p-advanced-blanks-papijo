@@ -3,6 +3,7 @@
  * @param {object} arguments Objects to be merged.
  * @return {object} Merged objects.
  */
+/*
 export function extend(...args: any[]) {
   for (let i = 1; i < args.length; i++) {
     for (let key in args[i]) {
@@ -16,5 +17,45 @@ export function extend(...args: any[]) {
       }
     }
   }
+  return args[0];
+}
+
+export function extend(...args: any[]) {
+  function extendObjects(target: any, source: any) {
+    for (let key in source) {
+      if (source.hasOwnProperty(key)) {
+        if (typeof target[key] === 'object' && typeof source[key] === 'object') {
+          extendObjects(target[key], source[key]);
+        } else {
+          target[key] = source[key];
+        }
+      }
+    }
+  }
+
+  for (let i = 1; i < args.length; i++) {
+    extendObjects(args[0], args[i]);
+  }
+  
+  return args[0];
+}
+*/
+export function extend(...args: any[]) {
+  function extendObjects(target: any, source: any) {
+    for (let key in source) {
+      if (source.hasOwnProperty(key)) {
+        if (typeof target[key] === 'object' && typeof source[key] === 'object') {
+          extendObjects(target[key], source[key]);
+        } else {
+          target[key] = source[key];
+        }
+      }
+    }
+  }
+
+  for (let i = 1; i < args.length; i++) {
+    extendObjects(args[0], args[i]);
+  }
+  
   return args[0];
 }

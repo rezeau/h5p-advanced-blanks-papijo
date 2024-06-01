@@ -155,6 +155,8 @@ export class ClozeController {
 
   showHint = (blank: Blank) => {
     this.cloze.hideAllHighlights();
+    console.log('coucou');
+    console.log(blank);
     blank.showHint();
     this.refreshCloze();
   }
@@ -235,12 +237,16 @@ export class ClozeController {
   }
 
   private createBlankBinding(blank: Blank) {
+  //console.log(JSON.stringify(blank, null, 4));
+  var template = '<span id="container{{id}}" class="blank {{#if blank.hasPendingFeedback}}has-pending-feedback{{/if}} {{#if blank.hasHint}}has-tip{{/if}} {{#if blank.isCorrect}}correct{{/if}} {{#if blank.isError}}error{{/if}} {{#if blank.isRetry}}retry{{/if}} {{#if blank.isShowingSolution}}showing-solution{{/if}}"><button class="h5p-notification" on-click="@this.fire(\'displayFeedback\', blank)" on-escape="@this.fire(\'closeMessage\', blank)">&#xf05a;</button>{{#unless isSelectCloze}}  <span class="h5p-input-wrapper"><input id="{{blank.id}}" type="text" value="{{blank.enteredText}}" size="{{blank.currTextLength}}" on-escape="@this.fire(\'closeMessage\', blank)" on-enter="@this.fire(\'checkBlank\', blank, \'enter\')" on-blur="@this.fire(\'checkBlank\', blank, \'blur\')" on-focus="@this.fire(\'focus\', blank)" on-anykey="@this.fire(\'textTyped\', blank)" {{#if(blank.isCorrect ||blank.isShowingSolution)}}disabled="disabled"{{/if}} class="h5p-text-input" autocomplete="off" utocapitalize="off"/> {{#if blank.hasHint}} {{#unless (blank.isCorrect || blank.isShowingSolution)}}<span class="h5p-tip-container"><span on-escape="@this.fire(\'closeMessage\', blank)" on-click="@this.fire(\'showHint\', blank)" on-enter="@this.fire(\'showHint\', blank)"  on-blur="@this.fire(\'checkBlank\', blank, \'blur\')" class="joubel-tip-container" aria-label="{{blank.tipTitle}}" aria-expanded="true" role="button" tabindex="0"><span class="joubel-icon-tip-normal "><span class="h5p-icon-shadow"></span><span class="h5p-icon-speech-bubble"></span><span class="h5p-icon-info"></span></span></span></span> {{/unless}} {{/if}}</span> {{/unless}}{{#if isSelectCloze}}<span class="h5p-input-wrapper"> <select id="{{blank.id}}" type="text" value="{{blank.enteredText}}" on-enter="@this.fire(\'checkBlank\', blank, \'enter\')" on-change="@this.fire(\'checkBlank\', blank, \'change\')" on-focus="@this.fire(\'focus\', blank)" {{#if(blank.isCorrect || blank.isShowingSolution)}}disabled="disabled"{{/if}} size="1" class="h5p-text-input"> {{#each blank.choices}}<option>{{this}}</option> {{/each}} </select> {{#if blank.hasHint}} {{#unless (blank.isCorrect || blank.isShowingSolution)}}<span on-escape="@this.fire(\'closeMessage\', blank)" on-click="@this.fire(\'showHint\', blank)"  on-enter="@this.fire(\'showHint\', blank)" class="h5p-tip-container"> <span class="joubel-tip-container" aria-label="{{blank.tipTitle}}" aria-expanded="true" role="button" tabindex="0"><span class="joubel-icon-tip-normal "> <span class="h5p-icon-shadow"></span> <span class="h5p-icon-speech-bubble"></span> <span class="h5p-icon-info"></span> </span></span></span> {{/unless}}{{/if}}</span>{{/if}}</span>'; 
+  // This is a string template
     var ractive = new Ractive({
       el: '#container_' + blank.id,
-      template: require('../views/blank.ractive.html'),
+      //template: require('../views/blank.ractive.html'),
+      template: template,
       data: {
         isSelectCloze: this.isSelectCloze,
-        blank: blank
+        blank: blank,
       },
       events: {
         enter: RactiveEventsKeys.enter,

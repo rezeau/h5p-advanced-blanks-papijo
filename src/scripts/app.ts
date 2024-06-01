@@ -50,6 +50,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
     super();
 
     // Set mandatory default values for editor widgets that create content type instances
+    
     config = extend({
       content: {
         blanksText: ''
