@@ -50,7 +50,8 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
     super();
 
     // Set mandatory default values for editor widgets that create content type instances
-    
+    // 18:15 31/10/2024 Removed by papi Jo because does not seem doing anything special
+    /*
     config = extend({
       content: {
         blanksText: ''
@@ -60,7 +61,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
         selectAlternatives: 'alternatives'
       }
     }, config);
-
+*/
     this.jQuery = H5P.jQuery;
     this.contentId = contentId;
 

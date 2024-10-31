@@ -155,8 +155,6 @@ export class ClozeController {
 
   showHint = (blank: Blank) => {
     this.cloze.hideAllHighlights();
-    console.log('coucou');
-    console.log(blank);
     blank.showHint();
     this.refreshCloze();
   }
