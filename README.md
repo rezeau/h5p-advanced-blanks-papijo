@@ -29,37 +29,17 @@ If using Windows; you must run those commands in Windows PowerShell.
 ```bash
 npm install
 ```
-If warnings "deprecated" are displayed:
+If warnings "deprecated" are displayed you can do an update but it is not necessary.
 
 ```bash
 npm update
-```
-*If you are using Windows*, now you need to run this command:
-```bash
-npm run copy
 ```
 
 ##### If you only want to build a working version of H5P.AdvancedBlanksPapiJo, execute:
 ```bash
 npm run build
 ```
-
-##### If you want to edit the scripts
-... you need to setup a develpment environment to be able to check the syntax of your scripts
-```bash
-npx eslint
-```
-if you get some messages then proceed per instructions on the screen
-
-*Need to install the following packages:
-eslint@9.14.0
-Ok to proceed? **(y)***
-
-If you get the error *Cannot find package 'globals' imported from YOUR_DIRECTORY/H5P.AdvancedBlanksPapiJo-1.1\eslint.config.mjs* Do this:
-```bash
-npm install globals
-```
-try again to do: 
+if you want to check your scripts, do this:
 ```bash
 npx eslint
 ```
@@ -67,12 +47,14 @@ or (with the same result)
 ```bash
 npm run lint
 ```
-Normally you should get no errors... until you tamper with the scripts etc.
 
 Now you are set to use your development environment to edit the scripts:
 Run this:
 ```bash
 npm run watch
 ```
-
+And when all is OK do this:
+```bash
+npm run build
+```
 
