@@ -21,28 +21,28 @@ export class Cloze {
 
 
   public hideAllHighlights(): void {
-    for (var highlight of this.highlights) {
+    for (const highlight of this.highlights) {
       highlight.isHighlighted = false;
     }
   }
 
   public reset() {
     this.hideAllHighlights();
-    for (var blank of this.blanks) {
+    for (const blank of this.blanks) {
       blank.reset();
     }
   }
 
   public showSolutions() {
-    for (var blank of this.blanks) {
+    for (const blank of this.blanks) {
       blank.showSolution();
     }
     this.hideAllHighlights();
   }
 
   public serialize() : string[] {
-    var cloze = [];
-    for (var blank of this.blanks) {
+    const cloze = [];
+    for (const blank of this.blanks) {
       cloze.push(blank.serialize());
     }
 
@@ -50,10 +50,10 @@ export class Cloze {
   }
 
   public deserialize(data: any) {
-    for (var index = 0; index < data.length; index++) {
+    for (let index = 0; index < data.length; index++) {
       if (index >= this.blanks.length)
         return;
-      var blank = this.blanks[index];
+      const blank = this.blanks[index];
       blank.deserialize(data[index]);
     }
   }

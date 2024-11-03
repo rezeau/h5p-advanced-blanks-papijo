@@ -82,11 +82,11 @@ export class Answer {
    * @returns number - the count of changes (replace, add, delete) needed to change the text from one string to the other 
    */
   private getChangesCountFromDiff(diff: jsdiff.Change[]): number {
-    var totalChangesCount = 0;
-    var lastType = "";
-    var lastCount = 0;
+    let totalChangesCount = 0;
+    let lastType = "";
+    let lastCount = 0;
 
-    for (var element of diff) {
+    for (const element of diff) {
       if (element.removed) {
         totalChangesCount += element.value.length;
         lastType = "removed";
@@ -117,7 +117,7 @@ export class Answer {
    */
 
   private getAcceptableSpellingMistakes(text: string): number {
-    var acceptableTypoCount: number;
+    let acceptableTypoCount: number;
     if (this.settings.warnSpellingErrors || this.settings.acceptSpellingErrors) // TODO: consider removal
       acceptableTypoCount = Math.floor(text.length / 10) + 1;
     else
@@ -132,11 +132,11 @@ export class Answer {
    * @returns Evaluation indicates if the entered text is matched by the answer.
    */
   public evaluateAttempt(attempt: string, checkCorrectness): Evaluation {
-    var cleanedAttempt = this.cleanString(attempt);
-    var evaluation = new Evaluation(this);
-    var useRegex = this.settings.useRegex;
-    for (var alternative of this.alternatives) {
-      var cleanedAlternative = this.cleanString(alternative);
+    const cleanedAttempt = this.cleanString(attempt);
+    const evaluation = new Evaluation(this);
+    const useRegex = this.settings.useRegex;
+    for (const alternative of this.alternatives) {
+      let cleanedAlternative = this.cleanString(alternative);
       if (useRegex && !checkCorrectness) {
         
         /* Checking for missing word(s) in student's attempt.
@@ -147,19 +147,19 @@ export class Answer {
           cleanedAlternative = "^(?!.*" + cleanedAlternative + ".*)";
         }
       
-        var ignoreCase = (this.settings.caseSensitive) ? "" : "i";
+        const ignoreCase = (this.settings.caseSensitive) ? "" : "i";
         const regex = new RegExp(cleanedAlternative, ignoreCase);
         const str = cleanedAttempt;
-        let m;
-        if ((m = regex.exec(str)) !== null) {
+        if (regex.exec(str) !== null) {
           evaluation.usedAlternative = cleanedAttempt;
           evaluation.correctness = Correctness.ExactMatch;
           return evaluation;
         }
+
       }
-      var diff = jsdiff.diffChars(cleanedAlternative, cleanedAttempt,
+      const diff = jsdiff.diffChars(cleanedAlternative, cleanedAttempt,
         { ignoreCase: !this.settings.caseSensitive });
-      var changeCount = this.getChangesCountFromDiff(diff);
+      const changeCount = this.getChangesCountFromDiff(diff);
 
       if (changeCount === 0) {
         evaluation.usedAlternative = cleanedAlternative;

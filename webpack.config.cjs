@@ -1,4 +1,8 @@
-var path = require('path');
+/* eslint-disable no-undef */
+
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 var nodeEnv = process.env.NODE_ENV || 'development';
 var isDev = (nodeEnv !== 'production');
 
@@ -40,7 +44,14 @@ var config = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".ractive.html"]
-  }
+  },
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'node_modules/ractive/ractive.min.js', to: '.' } // Copy directly into the root of "dist"
+      ]
+    })
+  ]
 };
 
 if (isDev) {

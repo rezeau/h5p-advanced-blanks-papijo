@@ -5,7 +5,7 @@ import { Message } from './message';
 import { MessageType, ClozeType, SelectAlternatives } from './enums';
 import { H5PLocalization, LocalizationLabels } from '../services/localization';
 import { ISettings } from "../services/settings";
-import { getLongestString, shuffleArray } from "../../lib/helpers";
+import { shuffleArray } from "../../lib/helpers";
 import * as jsdiff from 'diff';
 
 export class Blank extends ClozeElement {
@@ -47,9 +47,9 @@ export class Blank extends ClozeElement {
     super();
 
     this.enteredText = "";
-    this.correctAnswers = new Array();
-    this.incorrectAnswers = new Array();
-    this.choices = new Array();
+    this.correctAnswers = [];
+    this.incorrectAnswers = [];
+    this.choices = [];
     this.type = ClozeElementType.Blank;
     this.id = id;
   }
@@ -71,7 +71,7 @@ export class Blank extends ClozeElement {
 
   public getCorrectAnswers(): string[] {
     let result = [];
-    for (let answer of this.correctAnswers) {
+    for (const answer of this.correctAnswers) {
       result = result.concat(answer.alternatives);
     }
     return result;
@@ -98,15 +98,15 @@ export class Blank extends ClozeElement {
    * the correct and incorrect answers.
    */
   private loadChoicesFromOwnAlternatives(): string[] {
-    this.choices = new Array();
-    for (let answer of this.correctAnswers) {
-      for (let alternative of answer.alternatives) {
+    this.choices = [];
+    for (const answer of this.correctAnswers) {
+      for (const alternative of answer.alternatives) {
         this.choices.push(alternative);
       }
     }
 
-    for (let answer of this.incorrectAnswers) {
-      for (let alternative of answer.alternatives) {
+    for (const answer of this.incorrectAnswers) {
+      for (const alternative of answer.alternatives) {
         this.choices.push(alternative);
       }
     }
@@ -122,17 +122,17 @@ export class Blank extends ClozeElement {
    * @param otherBlanks All OTHER blanks in the cloze. (excludes the current one!)
    */
   public loadChoicesFromOtherBlanks(otherBlanks: Blank[]): string[] {
-    let ownChoices = new Array();
-    for (let answer of this.correctAnswers) {
-      for (let alternative of answer.alternatives) {
+    const ownChoices = [];
+    for (const answer of this.correctAnswers) {
+      for (const alternative of answer.alternatives) {
         ownChoices.push(alternative);
       }
     }
 
-    let otherChoices = new Array();
-    for (let otherBlank of otherBlanks) {
-      for (let answer of otherBlank.correctAnswers) {
-        for (let alternative of answer.alternatives) {
+    let otherChoices = [];
+    for (const otherBlank of otherBlanks) {
+      for (const answer of otherBlank.correctAnswers) {
+        for (const alternative of answer.alternatives) {
           otherChoices.push(alternative);
         }
       }
@@ -227,14 +227,14 @@ export class Blank extends ClozeElement {
   }
 
   private getSpellingMistakeMessage(expectedText: string, enteredText: string): string {
-    var message = this.localization.getTextFromLabel(LocalizationLabels.typoMessage)
+    let message = this.localization.getTextFromLabel(LocalizationLabels.typoMessage)
 
-    var diff = jsdiff.diffChars(expectedText, enteredText, { ignoreCase: !this.settings.caseSensitive });
+    const diff = jsdiff.diffChars(expectedText, enteredText, { ignoreCase: !this.settings.caseSensitive });
 
-    var mistakeSpan = this.jquery("<span/>", { "class": "spelling-mistake" });
-    for (var index = 0; index < diff.length; index++) {
-      var part = diff[index];
-      var spanClass = '';
+    const mistakeSpan = this.jquery("<span/>", { "class": "spelling-mistake" });
+    for (let index = 0; index < diff.length; index++) {
+      const part = diff[index];
+      let spanClass = '';
       if (part.removed) {
         if (index === diff.length - 1 || !diff[index + 1].added) {
           part.value = part.value.replace(/./g, "_");
@@ -248,7 +248,7 @@ export class Blank extends ClozeElement {
         spanClass = 'mistaken-character';
       }
 
-      var span = this.jquery("<span/>", { "class": spanClass, "html": part.value.replace(" ", "&nbsp;") });
+      const span = this.jquery("<span/>", { "class": spanClass, "html": part.value.replace(" ", "&nbsp;") });
       mistakeSpan.append(span);
     }
 
@@ -263,20 +263,20 @@ export class Blank extends ClozeElement {
   public evaluateAttempt(surpressTooltips: boolean, forceCheck?: boolean) {
     if (!this.hasPendingFeedback && this.lastCheckedText === this.enteredText && !forceCheck)
       return;
-    var useRegex = this.settings.useRegex;
+    const useRegex = this.settings.useRegex;
     this.lastCheckedText = this.enteredText.toString();
     this.hasPendingFeedback = false;
     this.removeTooltip();
     
     // Set checkCorrectness = true in order to detect that we are checking correct answers in answer.evaluateAttempt
-    var checkCorrectness = true;
-    var exactCorrectMatches = this.correctAnswers.map(answer => answer.evaluateAttempt(this.enteredText, checkCorrectness)).filter(evaluation => evaluation.correctness === Correctness.ExactMatch).sort(evaluation => evaluation.characterDifferenceCount);
+    let checkCorrectness = true;
+    const exactCorrectMatches = this.correctAnswers.map(answer => answer.evaluateAttempt(this.enteredText, checkCorrectness)).filter(evaluation => evaluation.correctness === Correctness.ExactMatch).sort(evaluation => evaluation.characterDifferenceCount);
     // Done, now we can set checkCorrectness to false and test incorrect answers
     checkCorrectness = false;
     
-    var closeCorrectMatches = this.correctAnswers.map(answer => answer.evaluateAttempt(this.enteredText, checkCorrectness)).filter(evaluation => evaluation.correctness === Correctness.CloseMatch).sort(evaluation => evaluation.characterDifferenceCount);
-    var exactIncorrectMatches = this.incorrectAnswers.map(answer => answer.evaluateAttempt(this.enteredText, checkCorrectness)).filter(evaluation => evaluation.correctness === Correctness.ExactMatch).sort(evaluation => evaluation.characterDifferenceCount);
-    var closeIncorrectMatches = this.incorrectAnswers.map(answer => answer.evaluateAttempt(this.enteredText, checkCorrectness)).filter(evaluation => evaluation.correctness === Correctness.CloseMatch).sort(evaluation => evaluation.characterDifferenceCount);
+    const closeCorrectMatches = this.correctAnswers.map(answer => answer.evaluateAttempt(this.enteredText, checkCorrectness)).filter(evaluation => evaluation.correctness === Correctness.CloseMatch).sort(evaluation => evaluation.characterDifferenceCount);
+    const exactIncorrectMatches = this.incorrectAnswers.map(answer => answer.evaluateAttempt(this.enteredText, checkCorrectness)).filter(evaluation => evaluation.correctness === Correctness.ExactMatch).sort(evaluation => evaluation.characterDifferenceCount);
+    const closeIncorrectMatches = this.incorrectAnswers.map(answer => answer.evaluateAttempt(this.enteredText, checkCorrectness)).filter(evaluation => evaluation.correctness === Correctness.CloseMatch).sort(evaluation => evaluation.characterDifferenceCount);
 
     if (exactCorrectMatches.length > 0) {
       this.setAnswerState(MessageType.Correct);
@@ -295,7 +295,7 @@ export class Blank extends ClozeElement {
         this.showErrorTooltip(exactIncorrectMatches[0].usedAnswer, surpressTooltips);
         return;
       } else {
-        let catchAll = exactIncorrectMatches[0].usedAnswer.alternatives[0];
+        const catchAll = exactIncorrectMatches[0].usedAnswer.alternatives[0];
         if (catchAll === '.*' && closeCorrectMatches.length > 0 && this.settings.warnSpellingErrors) {
           this.displayTooltip(this.getSpellingMistakeMessage(closeCorrectMatches[0].usedAlternative, this.enteredText), MessageType.Retry, surpressTooltips);
           this.setAnswerState(MessageType.Retry);
@@ -326,7 +326,7 @@ export class Blank extends ClozeElement {
       return;
     }
 
-    var alwaysApplyingAnswers = this.incorrectAnswers.filter(a => a.appliesAlways);
+    const alwaysApplyingAnswers = this.incorrectAnswers.filter(a => a.appliesAlways);
     if (alwaysApplyingAnswers && alwaysApplyingAnswers.length > 0) {
       this.showErrorTooltip(alwaysApplyingAnswers[0], surpressTooltips);
     }

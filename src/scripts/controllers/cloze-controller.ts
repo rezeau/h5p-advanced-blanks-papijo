@@ -12,6 +12,7 @@ import { Correctness } from '../models/answer';
 
 import * as RactiveEventsKeys from '../../lib/ractive-events-keys';
 
+
 interface ScoreChanged {
   (score: number, maxScore: number): void;
 }
@@ -55,14 +56,13 @@ export class ClozeController {
   }
 
   public get currentScore(): number {
-    var useRegex = this.settings.useRegex;
     const score = this.cloze.blanks.reduce((score, b) => {
       const notShowingSolution = !b.isShowingSolution;
       let correctAnswerGiven = false;
       let similarAnswerGiven = false;
-      let closeCorrectMatches;
+      //let closeCorrectMatches;
       // Detect small mistakes
-        closeCorrectMatches = b.correctAnswers
+        const closeCorrectMatches = b.correctAnswers
           .map(answer => answer.evaluateAttempt(b.enteredText, false))
           .filter(evaluation => evaluation.correctness === Correctness.CloseMatch);
         similarAnswerGiven = this.settings.acceptSpellingErrors && closeCorrectMatches.length > 0;
@@ -107,28 +107,28 @@ export class ClozeController {
     this.jquery = jquery;
     this.isSelectCloze = this.settings.clozeType === ClozeType.Select ? true : false;
 
-    var blanks = this.repository.getBlanks();
+    const blanks = this.repository.getBlanks();
 
     if (this.isSelectCloze && this.settings.selectAlternatives === SelectAlternatives.All) {
-      for (var blank of blanks) {
-        let otherBlanks = blanks.filter(v => v !== blank);
+      for (const blank of blanks) {
+        const otherBlanks = blanks.filter(v => v !== blank);
         blank.loadChoicesFromOtherBlanks(otherBlanks);
       }
     }
 
-    var snippets = this.repository.getSnippets();
+    const snippets = this.repository.getSnippets();
     blanks.forEach(blank => BlankLoader.instance.replaceSnippets(blank, snippets));
 
     this.cloze = ClozeLoader.createCloze(this.repository.getClozeText(), blanks);
 
-    var containers = this.createAndAddContainers(root);
+    const containers = this.createAndAddContainers(root);
     containers.cloze.innerHTML = this.cloze.html;
     this.createRactiveBindings();
   }
 
   checkAll = () => {
     this.cloze.hideAllHighlights();
-    for (var blank of this.cloze.blanks) {
+    for (const blank of this.cloze.blanks) {
       if ((!blank.isCorrect) && blank.enteredText !== "")
         blank.evaluateAttempt(true, true);
     }
@@ -155,6 +155,7 @@ export class ClozeController {
 
   showHint = (blank: Blank) => {
     this.cloze.hideAllHighlights();
+    console.log("blank.showHint has been called");
     blank.showHint();
     this.refreshCloze();
   }
@@ -188,8 +189,8 @@ export class ClozeController {
       && ((this.settings.autoCheck && blank.isCorrect && !this.isSolved)
         || !this.settings.autoCheck)) {
       // move to next blank
-      var index = this.cloze.blanks.indexOf(blank);
-      var nextId;
+      let index = this.cloze.blanks.indexOf(blank);
+      let nextId;
       while (index < this.cloze.blanks.length - 1 && !nextId) {
         index++;
         if (!this.cloze.blanks[index].isCorrect)
@@ -212,7 +213,7 @@ export class ClozeController {
   }
 
   private createAndAddContainers(addTo: HTMLElement): { cloze: HTMLDivElement } {
-    var clozeContainerElement = document.createElement('div');
+    const clozeContainerElement = document.createElement('div');
     clozeContainerElement.id = 'h5p-cloze-container';
     // papi Jo use same className for select and edit modes, to display the feedback-pending button for correct answers.
     clozeContainerElement.className = 'h5p-advanced-blanks-select-mode';
@@ -235,9 +236,10 @@ export class ClozeController {
   }
 
   private createBlankBinding(blank: Blank) {
-    var ractive = new Ractive({
+    const ractive = new Ractive({
       el: '#container_' + blank.id,
-      template: require('../views/blank.ractive.html'),
+      //template: require('../views/blank.ractive.html'),
+      template: (require('../views/blank.ractive.html') as { default: string }).default,
       data: {
         isSelectCloze: this.isSelectCloze,
         blank: blank
@@ -248,6 +250,7 @@ export class ClozeController {
         anykey: RactiveEventsKeys.anykey
       }
     });
+
     ractive.on("checkBlank", this.checkBlank);
     ractive.on("showHint", this.showHint);
     ractive.on("textTyped", this.textTyped);
@@ -259,11 +262,11 @@ export class ClozeController {
   }
 
   private createRactiveBindings() {
-    for (var highlight of this.cloze.highlights) {
+    for (const highlight of this.cloze.highlights) {
       this.createHighlightBinding(highlight);
     }
 
-    for (var blank of this.cloze.blanks) {
+    for (const blank of this.cloze.blanks) {
       this.createBlankBinding(blank);
     }
   }
@@ -273,13 +276,13 @@ export class ClozeController {
    * was changed
    */
   private refreshCloze() {
-    for (var highlight of this.cloze.highlights) {
-      var highlightRactive = this.highlightRactives[highlight.id];
+    for (const highlight of this.cloze.highlights) {
+      const highlightRactive = this.highlightRactives[highlight.id];
       highlightRactive.set("object", highlight);
     }
 
-    for (var blank of this.cloze.blanks) {
-      var blankRactive = this.blankRactives[blank.id];
+    for (const blank of this.cloze.blanks) {
+      const blankRactive = this.blankRactives[blank.id];
       let tickSpacer = 0;
       if (blank.isCorrect || blank.isShowingSolution) {
         tickSpacer = Number(blank.isCorrect) * 1.5;
@@ -327,8 +330,8 @@ export class ClozeController {
   public getCorrectAnswerList(): string[][] {
     if (!this.cloze || this.cloze.blanks.length === 0)
       return [[]];
-    let result = [];
-    for (var blank of this.cloze.blanks) {
+    const result = [];
+    for (const blank of this.cloze.blanks) {
       result.push(blank.getCorrectAnswers());
     }
     return result;

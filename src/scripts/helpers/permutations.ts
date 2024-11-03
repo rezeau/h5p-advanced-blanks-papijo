@@ -4,11 +4,11 @@
  */
 export function createPermutations(list: any[][]): any[][] {
   let output: any[][] = [[]];
-  for (let currentSublist of list) {
-    let newOutput = [];
-    for (let sublistObject of currentSublist) {
-      for (var o of output) {
-        var newList = o.slice();
+  for (const currentSublist of list) {
+    const newOutput = [];
+    for (const sublistObject of currentSublist) {
+      for (const o of output) {
+        const newList = o.slice();
         newList.push(sublistObject)
         newOutput.push(newList);
       }
