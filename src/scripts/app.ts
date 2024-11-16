@@ -20,7 +20,7 @@ const XAPI_ALTERNATIVE_EXTENSION = 'https://h5p.org/x-api/alternatives';
 const XAPI_CASE_SENSITIVITY = 'https://h5p.org/x-api/case-sensitivity';
 const XAPI_REPORTING_VERSION_EXTENSION = 'https://h5p.org/x-api/h5p-reporting-version';
 
-export default class AdvancedBlankspapijo2 extends (H5P.Question as { new(): any; }) {
+export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
 
   private clozeController: ClozeController;
   private repository: IDataRepository;

@@ -1,7 +1,7 @@
 {
-  "name": "h5p-advanced-blanks-papijo2",
-  "version": "1.1.8",
-  "description": "Fill the blanks exercise with individual feedback papi Jo version",
+  "name": "h5p-advanced-blanks",
+  "version": "1.1.0",
+  "description": "Fill the blanks exercise with individual feedback",
   "private": true,
   "scripts": {
     "test": "npx ava",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rezeau/h5p-advanced-blanks-papijo2.git"
+    "url": "git+https://github.com/sr258/h5p-advanced-blanks.git"
   },
   "keywords": [
     "h5p",
