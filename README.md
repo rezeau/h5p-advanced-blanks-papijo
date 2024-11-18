@@ -1,6 +1,6 @@
 # H5P Advanced Blanks
 
-This is an advanced 'Fill the blanks' content type for h5p. In addition to most of the features of the regular 'Fill the blanks' content type it supports:
+This is an advanced 'Fill the blanks' content type for h5p (papijo version). In addition to most of the features of the regular 'Fill the blanks' content type it supports:
 
 * The content creator can specify a feedback text message that should be displayed to the users when they enter a certain incorrect answer.
 * The content creator can specify parts of the text that should be highlighted when the users enter a certain incorrect answer. ("signal words")
