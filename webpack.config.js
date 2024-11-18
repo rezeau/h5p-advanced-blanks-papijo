@@ -8,7 +8,7 @@ module.exports = (env, argv) => {
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'h5p-advanced-blanks.js'
+      filename: 'h5p-advanced-blanks-papijo.js'
     },
     module: {
       rules: [
@@ -26,11 +26,20 @@ module.exports = (env, argv) => {
           test: /\.tsx?$/,
           use: 'ts-loader',
           exclude: /node_modules/
+        },
+        {
+          test: /\.ractive.html$/,
+          use: {
+            loader: 'html-loader',
+            options: {
+              minimize: false
+            }
+          }
         }
       ]
     },
     resolve: {
-      extensions: [".tsx", ".ts", ".js"]
+      extensions: [".tsx", ".ts", ".js", ".ractive.html"]
     }
   };
 

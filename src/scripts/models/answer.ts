@@ -45,7 +45,9 @@ export class Answer {
    * @param  {string} reaction - The tooltip that should be displayed. Format: Tooltip Text;!!-1!! !!+1!!
    */
   constructor(answerText: string, reaction: string, showHighlight: boolean, highlight: number, private settings: ISettings) {
-    this.alternatives = answerText.split(/\//).map(s => s.trim());
+    //this.alternatives = answerText.split(/\//).map(s => s.trim());
+    const ESCAPED_SLASH_REPLACEMENT = '\u250C'; // no-width space character
+    this.alternatives = answerText.split(/\//).map(s => s.replace(ESCAPED_SLASH_REPLACEMENT, '/'));
     this.message = new Message(reaction, showHighlight, highlight);
     if (answerText.trim() === "") {
       this.appliesAlways = true;
@@ -80,11 +82,11 @@ export class Answer {
    * @returns number - the count of changes (replace, add, delete) needed to change the text from one string to the other 
    */
   private getChangesCountFromDiff(diff: jsdiff.Change[]): number {
-    var totalChangesCount = 0;
-    var lastType = "";
-    var lastCount = 0;
+    let totalChangesCount = 0;
+    let lastType = "";
+    let lastCount = 0;
 
-    for (var element of diff) {
+    for (const element of diff) {
       if (element.removed) {
         totalChangesCount += element.value.length;
         lastType = "removed";
@@ -115,7 +117,7 @@ export class Answer {
    */
 
   private getAcceptableSpellingMistakes(text: string): number {
-    var acceptableTypoCount: number;
+    let acceptableTypoCount: number;
     if (this.settings.warnSpellingErrors || this.settings.acceptSpellingErrors) // TODO: consider removal
       acceptableTypoCount = Math.floor(text.length / 10) + 1;
     else
@@ -123,27 +125,47 @@ export class Answer {
 
     return acceptableTypoCount;
   }
+    
   /**
    * Checks if the text entered by the user in an ettempt is matched by the answer,
    * @param  {string} attempt The text entered by the user.
    * @returns Evaluation indicates if the entered text is matched by the answer.
    */
-  public evaluateAttempt(attempt: string): Evaluation {
-    var cleanedAttempt = this.cleanString(attempt);
-    var evaluation = new Evaluation(this);
+  public evaluateAttempt(attempt: string, checkCorrectness): Evaluation {
+    const cleanedAttempt = this.cleanString(attempt);
+    const evaluation = new Evaluation(this);
+    const useRegex = this.settings.useRegex;
+    for (const alternative of this.alternatives) {
+      let cleanedAlternative = this.cleanString(alternative);
+      if (useRegex && !checkCorrectness) {
+        
+        /* Checking for missing word(s) in student's attempt.
+          Replace the initial double -- with proper lookBehind expression.
+        */
+        if (cleanedAlternative.substr(0, 2) === '--') {
+          cleanedAlternative = cleanedAlternative.substr(2);
+          cleanedAlternative = "^(?!.*" + cleanedAlternative + ".*)";
+        }
+      
+        const ignoreCase = (this.settings.caseSensitive) ? "" : "i";
+        const regex = new RegExp(cleanedAlternative, ignoreCase);
+        const str = cleanedAttempt;
+        if (regex.exec(str) !== null) {
+          evaluation.usedAlternative = cleanedAttempt;
+          evaluation.correctness = Correctness.ExactMatch;
+          return evaluation;
+        }
 
-    for (var alternative of this.alternatives) {
-      var cleanedAlternative = this.cleanString(alternative);
-
-      var diff = jsdiff.diffChars(cleanedAlternative, cleanedAttempt,
+      }
+      const diff = jsdiff.diffChars(cleanedAlternative, cleanedAttempt,
         { ignoreCase: !this.settings.caseSensitive });
-      var changeCount = this.getChangesCountFromDiff(diff);
+      const changeCount = this.getChangesCountFromDiff(diff);
 
       if (changeCount === 0) {
         evaluation.usedAlternative = cleanedAlternative;
         evaluation.correctness = Correctness.ExactMatch;
         return evaluation;
-      }
+        }
 
       if (changeCount <= this.getAcceptableSpellingMistakes(alternative)
         && (evaluation.characterDifferenceCount === 0 || changeCount < evaluation.characterDifferenceCount)) {

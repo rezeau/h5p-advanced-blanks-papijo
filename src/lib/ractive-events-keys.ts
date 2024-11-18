@@ -2,7 +2,7 @@
 function makeKeyDefinition(code?: number) {
   return (node, fire) => {
     function keydownHandler(event) {
-      var which = event.which || event.keyCode;
+      const which = event.which || event.keyCode;
 
       if (code && which === code) {
         event.preventDefault();

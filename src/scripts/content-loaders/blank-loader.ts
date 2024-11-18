@@ -25,21 +25,23 @@ export class BlankLoader {
   }
 
   private decodeHtml(html: string): string {
-    var elem = document.createElement('textarea');
+    const elem = document.createElement('textarea');
     elem.innerHTML = html;
     return elem.value;
   }
 
-  public createBlank(id: string, correctText: string, hintText: string, incorrectAnswers: any[]): Blank {
-    var blank = new Blank(this.settings, this.localization, this.jquery, this.messageService, id)
+  public createBlank(id: string, correctText: string, correctFeedback : string, hintText: string, incorrectAnswers: any[]): Blank {
+    const blank = new Blank(this.settings, this.localization, this.jquery, this.messageService, id)
     if (correctText) {
       correctText = this.decodeHtml(correctText);
       blank.addCorrectAnswer(new Answer(correctText, "", false, 0, this.settings));
     }
     blank.setHint(new Message(hintText ? hintText : "", false, 0));
-
+    blank.correctFeedback = correctFeedback;
+    blank.hasCorrectFeedback = correctFeedback !== "";    
+    
     if (incorrectAnswers) {
-      for (var h5pIncorrectAnswer of incorrectAnswers) {
+      for (const h5pIncorrectAnswer of incorrectAnswers) {
         blank.addIncorrectAnswer(this.decodeHtml(h5pIncorrectAnswer.incorrectAnswerText), h5pIncorrectAnswer.incorrectAnswerFeedback, h5pIncorrectAnswer.showHighlight, h5pIncorrectAnswer.highlight);
       }
     }
@@ -60,7 +62,7 @@ export class BlankLoader {
     if(!snippets)
       return text;    
 
-    for (var snippet of snippets) {
+    for (const snippet of snippets) {
       if (snippet.name === undefined || snippet.name === "" || snippet.text === undefined || snippet.text === "")
         continue;
       text = text.replace("@" + snippet.name, snippet.text);
@@ -75,11 +77,11 @@ export class BlankLoader {
    * @param  {Highlight[]} highlightsAfter - All highlights coming after the blank.
    */
   public linkHighlightIdToObject(blank: Blank, highlightsBefore: Highlight[], highlightsAfter: Highlight[]) {
-    for (let answer of blank.correctAnswers) {
+    for (const answer of blank.correctAnswers) {
       answer.linkHighlightIdToObject(highlightsBefore, highlightsAfter);
     }
 
-    for (let answer of blank.incorrectAnswers) {
+    for (const answer of blank.incorrectAnswers) {
       answer.linkHighlightIdToObject(highlightsBefore, highlightsAfter);
     }
 

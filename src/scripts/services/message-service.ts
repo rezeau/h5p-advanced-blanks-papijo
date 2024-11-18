@@ -13,7 +13,7 @@ export class MessageService {
     if (!type)
       type = MessageType.None;
 
-    var elements = this.jQuery("#" + elementId);
+    const elements = this.jQuery("#" + elementId);
 
     if (elements.length > 0) {
       this.speechBubble = new H5P.JoubelSpeechBubble(elements, message);
@@ -26,7 +26,8 @@ export class MessageService {
       try {
         this.speechBubble.remove();
       }
-      catch (exception) {
+      catch {
+        // Intentionally empty - ignoring errors here
       }
     }
     this.speechBubble = undefined;

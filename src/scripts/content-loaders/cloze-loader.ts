@@ -16,13 +16,13 @@ export class ClozeLoader {
    * @returns Cloze
    */
   public static createCloze(html: string, blanks: Blank[]): Cloze {
-    var orderedAllElementsList: ClozeElement[] = new Array();
-    var highlightInstances: Highlight[] = new Array();
-    var blanksInstances: Blank[] = new Array();
+    let orderedAllElementsList: ClozeElement[] = [];
+    let highlightInstances: Highlight[] = [];
+    let blanksInstances: Blank[] = [];
 
     html = ClozeLoader.normalizeBlankMarkings(html);
 
-    var conversionResult = ClozeLoader.convertMarkupToSpans(html, blanks);
+    const conversionResult = ClozeLoader.convertMarkupToSpans(html, blanks);
     html = conversionResult.html;
     orderedAllElementsList = conversionResult.orderedAllElementsList;
     highlightInstances = conversionResult.highlightInstances;
@@ -30,7 +30,7 @@ export class ClozeLoader {
 
     ClozeLoader.linkHighlightsObjects(orderedAllElementsList, highlightInstances, blanksInstances);
 
-    var cloze = new Cloze();
+    const cloze = new Cloze();
     cloze.html = html;
     cloze.blanks = blanksInstances;
     cloze.highlights = highlightInstances;
@@ -49,22 +49,24 @@ export class ClozeLoader {
    * @returns Lists of active elements (see description).
    */
   private static convertMarkupToSpans(html: string, blanks: Blank[]): { html: string, orderedAllElementsList: ClozeElement[], highlightInstances: Highlight[], blanksInstances: Blank[] } {
-    var orderedAllElementsList: ClozeElement[] = new Array();
-    var highlightInstances: Highlight[] = new Array();
-    var blanksInstances: Blank[] = new Array();
+    const orderedAllElementsList: ClozeElement[] = [];
+    const highlightInstances: Highlight[] = [];
+    const blanksInstances: Blank[] = [];
 
-    var exclamationMarkRegExp = /!!(.{1,40}?)!!/i;
-    var highlightCounter = 0;
+    const exclamationMarkRegExp = /!!(.{1,40}?)!!/i;
+    let highlightCounter = 0;
     let blankCounter = 0;
+    let nextHighlightMatch;
+    let nextBlankIndex;
 
     // Searches the html string for highlights and blanks and inserts spans. 
     do {
-      var nextHighlightMatch = html.match(exclamationMarkRegExp);
-      var nextBlankIndex = html.indexOf(ClozeLoader.normalizedBlankMarker);
+      nextHighlightMatch = html.match(exclamationMarkRegExp);
+      nextBlankIndex = html.indexOf(ClozeLoader.normalizedBlankMarker);
 
       if (nextHighlightMatch && ((nextHighlightMatch.index < nextBlankIndex) || (nextBlankIndex < 0))) {
         // next active element is a highlight
-        var highlight = new Highlight(nextHighlightMatch[1], `highlight_${highlightCounter}`);
+        const highlight = new Highlight(nextHighlightMatch[1], `highlight_${highlightCounter}`);
         highlightInstances.push(highlight);
         orderedAllElementsList.push(highlight);
         html = html.replace(exclamationMarkRegExp, `<span id='container_highlight_${highlightCounter}'></span>`);
@@ -76,7 +78,7 @@ export class ClozeLoader {
           html = html.replace(ClozeLoader.normalizedBlankMarker, "<span></span>");
         }
         else {
-          var blank = blanks[blankCounter];
+          const blank = blanks[blankCounter];
           blanksInstances.push(blank);
           orderedAllElementsList.push(blank);
           html = html.replace(ClozeLoader.normalizedBlankMarker, `<span id='container_${blank.id}'></span>`);
@@ -100,7 +102,7 @@ export class ClozeLoader {
    * @returns string
    */
   private static normalizeBlankMarkings(html: string): string {
-    var underlineBlankRegEx = /_{3,}/g;
+    const underlineBlankRegEx = /_{3,}/g;
     html = html.replace(underlineBlankRegEx, ClozeLoader.normalizedBlankMarker);
     return html;
   }
@@ -112,14 +114,14 @@ export class ClozeLoader {
    * @param blanksInstances 
    */
   private static linkHighlightsObjects(orderedAllElementsList: ClozeElement[], highlightInstances: Highlight[], blanksInstances: Blank[]): void {
-    for (var blank of blanksInstances) {
-      var nextBlankIndexInArray = orderedAllElementsList.indexOf(blank);
-      var highlightsBeforeBlank = orderedAllElementsList
+    for (const blank of blanksInstances) {
+      const nextBlankIndexInArray = orderedAllElementsList.indexOf(blank);
+      const highlightsBeforeBlank = orderedAllElementsList
         .slice(0, nextBlankIndexInArray)
         .filter(e => e.type === ClozeElementType.Highlight)
         .map(e => e as Highlight)
         .reverse();
-      var highlightsAfterBlank = orderedAllElementsList
+      const highlightsAfterBlank = orderedAllElementsList
         .slice(nextBlankIndexInArray + 1)
         .filter(e => e.type === ClozeElementType.Highlight)
         .map(e => e as Highlight);

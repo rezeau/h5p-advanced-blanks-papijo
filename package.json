@@ -1,11 +1,11 @@
 {
-  "name": "h5p-advanced-blanks",
+  "name": "h5p-advanced-blanks-papijo",
   "version": "1.1.0",
   "description": "Fill the blanks exercise with individual feedback",
   "private": true,
   "scripts": {
     "test": "npx ava",
-    "build": "webpack --mode=development",
+    "build": "webpack --mode=development && cp node_modules/ractive/ractive.min.js ./dist",
     "watch": "webpack --watch --mode=development"
   },
   "repository": {
@@ -26,6 +26,7 @@
     "@babel/preset-env": "^7.18.10",
     "@types/diff": "^5.0.3",
     "@types/jquery": "^3.5.16",
+    "@types/ractive": "^0.7.27",
     "autoprefixer": "^10.4.14",
     "ava": "^4.3.3",
     "babel-loader": "^8.2.5",
@@ -37,8 +38,10 @@
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
-    "webpack": "^5.74.0",
+    "webpack": "^5.94.0",
     "webpack-cli": "^4.10.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "ractive": "^1.4.2"
+  }
 }

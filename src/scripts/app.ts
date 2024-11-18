@@ -20,7 +20,7 @@ const XAPI_ALTERNATIVE_EXTENSION = 'https://h5p.org/x-api/alternatives';
 const XAPI_CASE_SENSITIVITY = 'https://h5p.org/x-api/case-sensitivity';
 const XAPI_REPORTING_VERSION_EXTENSION = 'https://h5p.org/x-api/h5p-reporting-version';
 
-export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
+export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): InstanceType<typeof H5P.Question> }) {
 
   private clozeController: ClozeController;
   private repository: IDataRepository;
@@ -65,7 +65,7 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
     this.contentId = contentId;
     this.contentData = contentData;
 
-    let unwrapper = new Unrwapper(this.jQuery);
+    const unwrapper = new Unrwapper(this.jQuery);
 
     this.settings = new H5PSettings(config);
     this.localization = new H5PLocalization(config);
@@ -149,7 +149,7 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
     this.registerMedia();
     this.setIntroduction(this.repository.getTaskDescription());
 
-    this.container = this.jQuery("<div/>", { "class": "h5p-advanced-blanks" });
+    this.container = this.jQuery("<div/>", { "class": "h5p-advanced-blanks-papijo" });
     this.setContent(this.container);
     this.registerButtons();
 
@@ -161,11 +161,11 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
    * element.
    */
   private getH5pContainer(): JQuery {
-    var $content = this.jQuery('[data-content-id="' + this.contentId + '"].h5p-content');
-    var $containerParents = $content.parents('.h5p-container');
+    const $content = this.jQuery('[data-content-id="' + this.contentId + '"].h5p-content');
+    const $containerParents = $content.parents('.h5p-container');
 
     // select find container to attach dialogs to
-    var $container;
+    let $container;
     if ($containerParents.length !== 0) {
       // use parent highest up if any
       $container = $containerParents.last();
@@ -181,11 +181,11 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
   }
 
   private registerMedia() {
-    var media = this.repository.getMedia();
+    const media = this.repository.getMedia();
     if (!media || !media.library)
       return;
 
-    var type = media.library.split(' ')[0];
+    const type = media.library.split(' ')[0];
     if (type === 'H5P.Image') {
       if (media.params.file) {
         this.setImage(media.params.file.path, {
@@ -199,11 +199,15 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
         this.setVideo(media);
       }
     }
+    else if (type === 'H5P.Audio') {
+      if (media.params.files) {
+        this.setAudio(media);
+      }
+    }
   }
 
   private registerButtons() {
-    var $container = this.getH5pContainer();
-
+    const $container = this.getH5pContainer();
 
     if (!this.settings.autoCheck) {
       // Check answer button
@@ -270,12 +274,10 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
     this.clozeController.reset();
     this.answered = false;
     this.moveToState(States.ongoing);
-    // Reset timer
-    this.setActivityStarted(true);
   }
 
   private showFeedback() {
-    var scoreText = H5P.Question.determineOverallFeedback(this.localization.getObjectForStructure(LocalizationStructures.overallFeedback), this.clozeController.currentScore / this.clozeController.maxScore).replace('@score', this.clozeController.currentScore).replace('@total', this.clozeController.maxScore);
+    const scoreText = H5P.Question.determineOverallFeedback(this.localization.getObjectForStructure(LocalizationStructures.overallFeedback), this.clozeController.currentScore / this.clozeController.maxScore).replace('@score', this.clozeController.currentScore).replace('@total', this.clozeController.maxScore);
     this.setFeedback(scoreText, this.clozeController.currentScore, this.clozeController.maxScore, this.localization.getTextFromLabel(LocalizationLabels.scoreBarLabel));
   }
 
@@ -363,7 +365,7 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
    */
   public triggerXAPIAnswered = (): void => {
     this.answered = true;
-    var xAPIEvent = this.createXAPIEventTemplate('answered');
+    const xAPIEvent = this.createXAPIEventTemplate('answered');
     this.addQuestionToXAPI(xAPIEvent);
     this.addResponseToXAPI(xAPIEvent);
     this.trigger(xAPIEvent);
@@ -376,7 +378,7 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-6}
    */
   public getXAPIData = () => {
-    var xAPIEvent = this.createXAPIEventTemplate('answered');
+    const xAPIEvent = this.createXAPIEventTemplate('answered');
     this.addQuestionToXAPI(xAPIEvent);
     this.addResponseToXAPI(xAPIEvent);
     return {
@@ -422,7 +424,7 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
    * Add the question itself to the definition part of an xAPIEvent
    */
   public addQuestionToXAPI = (xAPIEvent) => {
-    var definition = xAPIEvent.getVerifiedStatementValue(['object', 'definition']);
+    const definition = xAPIEvent.getVerifiedStatementValue(['object', 'definition']);
     this.jQuery.extend(true, definition, this.getxAPIDefinition());
 
     // Set reporting module version if alternative extension is used
@@ -449,7 +451,7 @@ export default class AdvancedBlanks extends (H5P.Question as { new(): any; }) {
    * @return {string} User answers separated by the "[,]" pattern
    */
   public getxAPIResponse = (): string => {
-    var usersAnswers = this.getCurrentState();
+    const usersAnswers = this.getCurrentState();
     return usersAnswers.join('[,]');
   };
 }

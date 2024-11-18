@@ -1,6 +1,6 @@
 import "../styles/style.css";
-import AdvancedBlanks from '../scripts/app';
+import AdvancedBlanksPapiJo from '../scripts/app';
 
 // Load library
 H5P = H5P || {};
-H5P.AdvancedBlanks = AdvancedBlanks;
+H5P.AdvancedBlanksPapiJo = AdvancedBlanksPapiJo;

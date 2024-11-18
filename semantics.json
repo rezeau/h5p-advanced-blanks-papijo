@@ -11,7 +11,8 @@
         "label": "Type",
         "options": [
           "H5P.Image 1.1",
-          "H5P.Video 1.6"
+          "H5P.Video 1.6",
+          "H5P.Audio 1.5"
         ],
         "optional": true,
         "description": "Optional media to display above the question."
@@ -72,9 +73,10 @@
         "importance": "high",
         "enterMode": "p",
         "important": {
-          "description": "<ul><li>Blanks must be marked with __________ (three or more underscores).</li><li>Do not put the solutions into the text.</li></ul>",
+          "description": "<ul><li>Tutorial and Examples: <a href=\"http://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Papi Jo's H5P Moodle site</a></span></li><li>Blanks must be marked with __________ (three or more underscores).</li><li>Do not put the solutions into the text.</li></ul>",
           "example": "I have _________ wanted to visit Norway."
         },
+        "description": "",
         "tags": [
           "strong",
           "em",
@@ -128,6 +130,25 @@
               "optional": true
             },
             {
+              "name": "correctFeedback",
+              "type": "text",
+              "label": "Feedback for correct answer",
+              "optional": true,
+              "description": "This feedback should confirm that the user found the correct answer in order to re-enforce his choice.",
+              "widget": "html",
+              "tags": [
+                "strong",
+                "em",
+                "u",
+                "strike",
+                "a",
+                "ul",
+                "ol",
+                "sub",
+                "sup"
+              ]
+            },
+            {
               "name": "incorrectAnswersList",
               "type": "list",
               "label": "Incorrect answers",
@@ -139,6 +160,7 @@
                 "type": "group",
                 "label": "Incorrect answer",
                 "description": "You can separate alternative answers with a slash (/).",
+                "expanded": false,
                 "fields": [
                   {
                     "name": "incorrectAnswerText",
@@ -156,6 +178,7 @@
                       "strong",
                       "em",
                       "u",
+                      "strike",
                       "a",
                       "ul",
                       "ol",
@@ -231,7 +254,7 @@
         "type": "list",
         "label": "Snippet list",
         "importance": "high",
-        "description": "Snippets are texts that can be reused in feedback texts by inserting @snippetname into the it.",
+        "description": "Snippets are texts that can be reused in feedback texts by inserting @snippetname into the text.",
         "entity": "snippet",
         "optional": true,
         "min": 0,
@@ -275,7 +298,7 @@
     "type": "group",
     "label": "Overall Feedback",
     "importance": "low",
-    "expanded": true,
+    "expanded": false,
     "fields": [
       {
         "name": "overallFeedback",
@@ -371,11 +394,11 @@
         "options": [
           {
             "value": "alternatives",
-            "label": "The incorrect answers entered for the blank"
+            "label": "The correct and incorrect answers entered for the blank"
           },
           {
             "value": "all",
-            "label": "The correct answers of all other blanks"
+            "label": "The correct answers of the blank and all the other blanks"
           }
         ],
         "default": "alternatives"
@@ -383,17 +406,39 @@
       {
         "name": "selectAlternativeRestriction",
         "type": "number",
-        "label": "Maximum number of alternatives of other blanks offered for selection",
+        "label": "Maximum number of total alternatives offered for selection",
         "description": "Enter 0 to set no limit.",
         "min": 0,
         "step": 1,
         "default": 5,
         "widget": "showWhen",
         "showWhen": {
+        "type": "and",
           "rules": [
             {
               "field": "mode",
               "equals": "selection"
+            },
+            {
+              "field": "selectAlternatives",
+              "equals": "all"
+            }
+          ]
+        }
+      },
+      {
+        "name": "useRegex",
+        "importance": "low",
+        "type": "boolean",
+        "default": false,
+        "label": "Use Regular Expressions",
+        "description": "If enabled, correct and incorrect answers will be analysed using the regular expressions provided. Use this only if you know what you are doing!",
+        "widget": "showWhen",
+        "showWhen": {
+          "rules": [
+            {
+              "field": "mode",
+              "equals": "typing"
             }
           ]
         }
@@ -420,7 +465,7 @@
         "default": "mistake",
         "widget": "showWhen",
         "showWhen": {
-          "rules": [
+        "rules": [
             {
               "field": "mode",
               "equals": "typing"
@@ -467,7 +512,39 @@
         "name": "showSolutionsRequiresInput",
         "type": "boolean",
         "default": true,
-        "optional": true
+        "optional": true,
+        "widget": "showWhen",
+        "showWhen": {
+          "rules": [
+            {
+              "field": "enableSolutionsButton",
+              "equals": true
+            }
+          ]
+        }
+      },
+      {
+        "label": "Show all alternative solutions",
+        "importance": "low",
+        "name": "showAllSolutions",
+        "description": "If your blanks have more than one correct solution, check this to display all the alternatives.",
+        "type": "boolean",
+        "default": false,
+        "optional": true,
+        "widget": "showWhen",
+        "showWhen": {
+        "type": "and",
+          "rules": [
+            {
+              "field": "enableSolutionsButton",
+              "equals": true
+            },
+            {
+              "field": "mode",
+              "equals": "typing"
+            }
+          ]
+        }
       },
       {
         "label": "Enable \"Retry\"",
@@ -491,14 +568,38 @@
         "importance": "low",
         "name": "confirmCheckDialog",
         "type": "boolean",
-        "default": false
+        "description": "This options is not compatible with the \"Automatically check answers after input\" option",
+        "default": false,
+        "widget": "showWhen",
+        "showWhen": {
+          "rules": [
+            {
+              "field": "autoCheck",
+              "equals": false
+            }
+          ]
+        }
       },
       {
         "label": "Show confirmation dialog on \"Retry\"",
         "importance": "low",
         "name": "confirmRetryDialog",
         "type": "boolean",
-        "default": false
+        "default": false,
+        "widget": "showWhen",
+        "showWhen": {
+        "type": "and",
+          "rules": [
+            {
+              "field": "enableRetry",
+              "equals": true
+            },
+            {
+              "field": "autoCheck",
+              "equals": false
+            }
+          ]
+        }
       }
     ]
   },
@@ -525,15 +626,6 @@
     "name": "checkAnswer",
     "type": "text",
     "default": "Check",
-    "common": true,
-    "optional": true
-  },
-  {
-    "label": "Text for \"Submit\" button",
-    "importance": "low",
-    "name": "submitAnswer",
-    "type": "text",
-    "default": "Submit",
     "common": true,
     "optional": true
   },

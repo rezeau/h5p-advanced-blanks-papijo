@@ -15,11 +15,11 @@ export class Unrwapper {
    * @returns the cleaned html string
    */
   public unwrap(html: string): string {
-    var parsed = this.jquery(html);
+    const parsed = this.jquery(html);
     if (parsed.length !== 1) {
       return html;
     }
-    let unwrapped = parsed.unwrap().html();
+    const unwrapped = parsed.unwrap().html();
     return unwrapped;
   }
 }

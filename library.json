@@ -1,5 +1,5 @@
 {
-  "title": "Complex fill the blanks",
+  "title": "Complex fill the blanks papi Jo",
   "description": "Fill the blanks exercise with individual feedback",
   "majorVersion": 1,
   "minorVersion": 2,
@@ -7,7 +7,7 @@
   "runnable": 1,
   "author": "S. Rettig",
   "license": "MIT",
-  "machineName": "H5P.AdvancedBlanks",
+  "machineName": "H5P.AdvancedBlanksPapiJo",
   "coreApi": {
     "majorVersion": 1,
     "minorVersion": 6
@@ -20,7 +20,7 @@
       "path": "dist/ractive.min.js"
     },
     {
-      "path": "dist/h5p-advanced-blanks.js"
+      "path": "dist/h5p-advanced-blanks-papijo.js"
     }
   ],
   "preloadedDependencies": [
@@ -32,7 +32,7 @@
     {
       "machineName": "H5P.Question",
       "majorVersion": 1,
-      "minorVersion": 4
+      "minorVersion": 5
     },
     {
       "machineName": "H5P.JoubelUI",
@@ -47,7 +47,7 @@
       "minorVersion": 3
     },
     {
-      "machineName": "H5PEditor.ShowWhen",
+      "machineName": "H5PEditor.ShowWhenpapijo",
       "majorVersion": 1,
       "minorVersion": 0
     },

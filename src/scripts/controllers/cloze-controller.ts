@@ -9,7 +9,11 @@ import { ClozeType, SelectAlternatives } from "../models/enums";
 import { Highlight } from "../models/highlight";
 import { Blank } from "../models/blank";
 import { Correctness } from '../models/answer';
-import { highlightTemplate, blankTemplate } from '../views/templates';
+
+import highlightTemplate from '../views/highlight.ractive.html';
+import blankTemplate from '../views/blank.ractive.html';
+
+import * as RactiveEventsKeys from '../../lib/ractive-events-keys';
 
 interface ScoreChanged {
   (score: number, maxScore: number): void;
@@ -28,7 +32,7 @@ interface Typed {
 }
 
 interface TextChanged {
-  (): void;
+  () : void;
 }
 
 export class ClozeController {
@@ -42,6 +46,10 @@ export class ClozeController {
   public onSolved: Solved;
   public onTyped: Typed;
   public onTextChanged: TextChanged;
+
+  // Storage of the ractive objects that link models and views
+  private highlightRactives: { [id: string]: Ractive.Ractive } = {};
+  private blankRactives: { [id: string]: Ractive.Ractive } = {};
 
   public get maxScore(): number {
     return this.cloze.blanks.length;
@@ -62,7 +70,7 @@ export class ClozeController {
 
       // Detect small mistakes
       const closeCorrectMatches = b.correctAnswers
-        .map(answer => answer.evaluateAttempt(b.enteredText))
+        .map(answer => answer.evaluateAttempt(b.enteredText, false))
         .filter(evaluation => evaluation.correctness === Correctness.CloseMatch);
       const similarAnswerGiven = this.settings.acceptSpellingErrors && closeCorrectMatches.length > 0;
 
@@ -98,35 +106,38 @@ export class ClozeController {
   }
 
   /**
-   * Sets up all blanks, the cloze itself, and binds event listeners using jQuery.
+   * Sets up all blanks, the cloze itself and the ractive bindings.
    * @param  {HTMLElement} root
    */
   initialize(root: HTMLElement, jquery: JQuery) {
     this.jquery = jquery;
-    this.isSelectCloze = this.settings.clozeType === ClozeType.Select;
+    this.isSelectCloze = this.settings.clozeType === ClozeType.Select ? true : false;
 
     var blanks = this.repository.getBlanks();
 
+    // Stop ractive debug mode
+    Ractive.DEBUG = false;
+
     if (this.isSelectCloze && this.settings.selectAlternatives === SelectAlternatives.All) {
-      for (var blank of blanks) {
-        let otherBlanks = blanks.filter(v => v !== blank);
+      for (const blank of blanks) {
+        const otherBlanks = blanks.filter(v => v !== blank);
         blank.loadChoicesFromOtherBlanks(otherBlanks);
       }
     }
 
-    var snippets = this.repository.getSnippets();
+    const snippets = this.repository.getSnippets();
     blanks.forEach(blank => BlankLoader.instance.replaceSnippets(blank, snippets));
 
     this.cloze = ClozeLoader.createCloze(this.repository.getClozeText(), blanks);
 
-    var containers = this.createAndAddContainers(root);
-    this.jquery.find(containers.cloze).html(this.cloze.html);
-    this.createBindings();
+    const containers = this.createAndAddContainers(root);
+    containers.cloze.innerHTML = this.cloze.html;
+    this.createRactiveBindings();
   }
 
   checkAll = () => {
     this.cloze.hideAllHighlights();
-    for (var blank of this.cloze.blanks) {
+    for (const blank of this.cloze.blanks) {
       if ((!blank.isCorrect) && blank.enteredText !== "")
         blank.evaluateAttempt(true, true);
     }
@@ -134,46 +145,37 @@ export class ClozeController {
     this.checkAndNotifyCompleteness();
   }
 
-  textTyped = (blank: Blank) => {
-    // Persist the current value from the input field to the Blank model
-    const newValue = this.jquery.find(`#${blank.id}`).val() as string;
-    blank.enteredText = newValue; // Store the new value in the Blank model
+  textTyped = (event, blank: Blank) => {
+    blank.onTyped();
+    if (this.onTyped)
+      this.onTyped();
+    this.refreshCloze();
+  }
 
-    blank.onTyped(); // Trigger any typed event
-    if (this.onTyped) this.onTyped();
-
-    // Refresh only this specific blank field
-    this.refreshCloze(blank);
-  };
-
-  focus = (blank: Blank) => {
+  focus = (event, blank: Blank) => {
     blank.onFocused();
-    this.refreshCloze(blank);
-  };
+    this.refreshCloze();
+  }
 
-  displayFeedback = (blank: Blank) => {
+  displayFeedback = (event, blank: Blank) => {
     blank.onDisplayFeedback();
-    this.refreshCloze(blank);
-  };
+    this.refreshCloze();
+  }
 
-  showHint = (blank: Blank) => {
+  showHint = (event, blank: Blank) => {
     this.cloze.hideAllHighlights();
     blank.showHint();
-    this.refreshCloze(blank);
-  };
+    this.refreshCloze();
+  }
 
-  requestCloseTooltip = (blank: Blank) => {
+  requestCloseTooltip = (event, blank: Blank) => {
     blank.removeTooltip();
-    this.refreshCloze(blank);
-    this.jquery.find(`#${blank.id}`).focus();
-  };
+    this.refreshCloze();
+    this.jquery.find("#" + blank.id).focus();
+  }
 
-  checkBlank = (blank: Blank, cause: string) => {
-    // Persist the current value before checking
-    const newValue = this.jquery.find(`#${blank.id}`).val() as string;
-    blank.enteredText = newValue; // Store the new value in the Blank model
-
-    if (cause === 'blur' || cause === 'change') {
+  checkBlank = (event, blank: Blank, cause: string) => {
+    if ((cause === 'blur' || cause === 'change')) {
       blank.lostFocus();
     }
 
@@ -182,29 +184,31 @@ export class ClozeController {
     }
 
     if (this.settings.autoCheck) {
-      if (!blank.enteredText || blank.enteredText === "") return;
+      if (!blank.enteredText || blank.enteredText === "")
+        return;
 
       this.cloze.hideAllHighlights();
       blank.evaluateAttempt(false);
       this.checkAndNotifyCompleteness();
-      this.refreshCloze(blank); // Refresh only this blank field
+      this.refreshCloze();
       this.onAutoChecked();
     }
     if ((cause === 'enter')
-      && ((this.settings.autoCheck && blank.isCorrect && !this.cloze.isSolved) || !this.settings.autoCheck)
-    ) {
-      var index = this.cloze.blanks.indexOf(blank);
-      var nextId;
+      && ((this.settings.autoCheck && blank.isCorrect && !this.isSolved)
+        || !this.settings.autoCheck)) {
+      // move to next blank
+      let index = this.cloze.blanks.indexOf(blank);
+      let nextId;
       while (index < this.cloze.blanks.length - 1 && !nextId) {
         index++;
         if (!this.cloze.blanks[index].isCorrect)
           nextId = this.cloze.blanks[index].id;
       }
-      if (nextId) {
+
+      if (nextId)
         this.jquery.find("#" + nextId).focus();
-      }
     }
-  };
+  }
 
   reset = () => {
     this.cloze.reset();
@@ -212,20 +216,17 @@ export class ClozeController {
   }
 
   showSolutions = () => {
-    this.cloze.blanks.forEach(blank => {
-      blank.isShowingSolution = true;
-      blank.enteredText = blank.getCorrectAnswers()[0] || ''; // Set the first correct answer, if available
-    });
+    this.cloze.showSolutions();
     this.refreshCloze();
-  };
+  }
 
   private createAndAddContainers(addTo: HTMLElement): { cloze: HTMLDivElement } {
-    var clozeContainerElement = document.createElement('div');
+    const clozeContainerElement = document.createElement('div');
     clozeContainerElement.id = 'h5p-cloze-container';
     if (this.settings.clozeType === ClozeType.Select) {
-      clozeContainerElement.className = 'h5p-advanced-blanks-select-mode';
+      clozeContainerElement.className = 'h5p-advanced-blanks-papijo-select-mode';
     } else {
-      clozeContainerElement.className = 'h5p-advanced-blanks-type-mode';
+      clozeContainerElement.className = 'h5p-advanced-blanks-papijo-type-mode';
     }
     addTo.appendChild(clozeContainerElement);
 
@@ -234,66 +235,84 @@ export class ClozeController {
     };
   }
 
-  private createBindings() {
-    this.cloze.highlights.forEach((highlight) => {
-      this.bindHighlight(highlight);
-    });
-
-    this.cloze.blanks.forEach((blank) => {
-      this.bindBlank(blank);
+  private createHighlightBinding(highlight: Highlight) {
+    this.highlightRactives[highlight.id] = new Ractive({
+      el: '#container_' + highlight.id,
+      template: highlightTemplate,
+      data: {
+        object: highlight
+      }
     });
   }
 
-  private bindHighlight(highlight: Highlight) {
-    const highlightContainer = this.jquery.find(`#container_${highlight.id}`);
-    highlightContainer.html(highlightTemplate(highlight.id, highlight.isHighlighted, highlight.text));
+  private createBlankBinding(blank: Blank) {
+    var ractive = new Ractive({
+      el: '#container_' + blank.id,
+      template: blankTemplate,
+      data: {
+        isSelectCloze: this.isSelectCloze,
+        blank: blank
+      },
+      events: {
+        enter: RactiveEventsKeys.enter,
+        escape: RactiveEventsKeys.escape,
+        anykey: RactiveEventsKeys.anykey
+      }
+    });
+    ractive.on("checkBlank", this.checkBlank);
+    ractive.on("showHint", this.showHint);
+    ractive.on("textTyped", this.textTyped);
+    ractive.on("textChanged", this.onTextChanged);
+    ractive.on("closeMessage", this.requestCloseTooltip);
+    ractive.on("focus", this.focus);
+    ractive.on("displayFeedback", this.displayFeedback);
+
+    this.blankRactives[blank.id] = ractive;
   }
 
-  private bindBlank(blank: Blank) {
-    const blankContainer = this.jquery.find(`#container_${blank.id}`);
-    blankContainer.html(blankTemplate(blank, this.isSelectCloze));
+  private createRactiveBindings() {
+    for (const highlight of this.cloze.highlights) {
+      this.createHighlightBinding(highlight);
+    }
 
-    const blankInput = blankContainer.find(`#${blank.id}`);
-    if (this.isSelectCloze) {
-      blankInput.on('change', () => this.checkBlank(blank, 'change'));
-    } else {
-      blankInput.on('keyup', () => this.textTyped(blank));
-      blankInput.on('blur', () => this.checkBlank(blank, 'blur'));
-      blankInput.on('focus', () => this.focus(blank));
-      blankInput.on('keypress', (e) => {
-        if (e.key === 'Enter') this.checkBlank(blank, 'enter');
-      });
+    for (const blank of this.cloze.blanks) {
+      this.createBlankBinding(blank);
     }
   }
 
-  private createSelectOptions(blank: Blank) {
-    let optionsHTML = '';
-    blank.choices.forEach((choice) => {
-      optionsHTML += `<option value="${choice}">${choice}</option>`;
-    });
-    return `<select id="${blank.id}">${optionsHTML}</select>`;
-  }
+  /**
+   * Updates all views of highlights and blanks. Can be called when a model
+   * was changed
+   */
+  private refreshCloze() {
+  //console.log('refreshCloze');
+    for (const highlight of this.cloze.highlights) {
+      const highlightRactive = this.highlightRactives[highlight.id];
+      highlightRactive.set("object", highlight);
+    }
 
-  // Modify refreshCloze to update only specific blanks if needed
-  private refreshCloze(blank?: Blank) {
-    if (blank) {
-      // Update only the specific blank field
-      const blankContainer = this.jquery.find(`#container_${blank.id}`);
-      blankContainer.html(blankTemplate(blank, this.isSelectCloze));
-    } else {
-      // Update all blanks and highlights (if needed)
-      this.cloze.highlights.forEach((highlight) => {
-        const highlightContainer = this.jquery.find(`#container_${highlight.id}`);
-        highlightContainer.html(highlightTemplate(highlight.id, highlight.isHighlighted, highlight.text));
-      });
-
-      this.cloze.blanks.forEach((blank) => {
-        const blankContainer = this.jquery.find(`#container_${blank.id}`);
-        blankContainer.html(blankTemplate(blank, this.isSelectCloze));
-      });
+    for (const blank of this.cloze.blanks) {
+      const blankRactive = this.blankRactives[blank.id];
+      let tickSpacer = 0;
+      if (blank.isCorrect || blank.isShowingSolution) {
+        tickSpacer = Number(blank.isCorrect) * 1.5;
+        blank.currTextLength = blank.enteredText.length + tickSpacer;
+      } else  {
+        if (blank.enteredText) {
+        //console.log('blank.enteredText');
+          // Auto grow input field to accomodate entered text!
+          if (blank.hasHint && (blank.isError || blank.isRetry)) {
+            tickSpacer = 2;
+          }
+          blank.currTextLength = Math.max(blank.minTextLength, blank.enteredText.length + 2 + tickSpacer);
+        } else {
+          blank.currTextLength = blank.minTextLength;
+        }
+        console.log('blank.currTextLength = ' + blank.currTextLength);
+      }
+      blankRactive.set("blank", blank);
     }
   }
-
 
   private checkAndNotifyCompleteness = (): boolean => {
     if (this.onScoreChanged)
@@ -323,10 +342,10 @@ export class ClozeController {
   public getCorrectAnswerList(): string[][] {
     if (!this.cloze || this.cloze.blanks.length === 0)
       return [[]];
-    let result = [];
-    this.cloze.blanks.forEach((blank) => {
+    const result = [];
+    for (const blank of this.cloze.blanks) {
       result.push(blank.getCorrectAnswers());
-    });
+    }
     return result;
   }
 }
