@@ -159,8 +159,6 @@
                 "name": "incorrectAnswerGroup",
                 "type": "group",
                 "label": "Incorrect answer",
-                "description": "You can separate alternative answers with a slash (/).",
-                "expanded": false,
                 "fields": [
                   {
                     "name": "incorrectAnswerText",
