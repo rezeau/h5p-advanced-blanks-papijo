@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "test": "npx ava",
-    "build": "webpack --mode=development && cp node_modules/ractive/ractive.min.js ./dist",
+    "dist": "webpack --mode=development && cp node_modules/ractive/ractive.min.js ./dist",
+    "build": "webpack --mode=production",
     "watch": "webpack --watch --mode=development"
   },
   "repository": {

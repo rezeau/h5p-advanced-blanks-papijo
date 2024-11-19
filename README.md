@@ -20,19 +20,19 @@ Grab all the modules:
 ```bash
 npm install
 ```
-
-Build project with debug info:
+Copy all relevant files to ``dist`` directory
 
 ```bash
-npm run build
+npm run dist
+```
+
+Watch project in development mode:
+```bash
+npm run watch
 ```
 
 Build project in production mode:
 ```bash
-npm run build:prod
+npm run build
 ```
 
-Copy all relevant files to ``dist`` directory
-```bash
-npm run dist
-```
