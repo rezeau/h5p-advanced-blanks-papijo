@@ -223,11 +223,6 @@ export class ClozeController {
   private createAndAddContainers(addTo: HTMLElement): { cloze: HTMLDivElement } {
     const clozeContainerElement = document.createElement('div');
     clozeContainerElement.id = 'h5p-cloze-container';
-    if (this.settings.clozeType === ClozeType.Select) {
-      clozeContainerElement.className = 'h5p-advanced-blanks-papijo-select-mode';
-    } else {
-      clozeContainerElement.className = 'h5p-advanced-blanks-papijo-type-mode';
-    }
     addTo.appendChild(clozeContainerElement);
 
     return {

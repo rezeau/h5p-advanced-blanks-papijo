@@ -149,7 +149,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): Inst
     this.registerMedia();
     this.setIntroduction(this.repository.getTaskDescription());
 
-    this.container = this.jQuery("<div/>", { "class": "h5p-advanced-blanks-papijo" });
+    this.container = this.jQuery("<div/>", { "class": "h5p-advanced-blanks" });
     this.setContent(this.container);
     this.registerButtons();
 

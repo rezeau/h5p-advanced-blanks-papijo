@@ -1,21 +1,21 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@300&display=swap');
-.h5p-advanced-blanks-papijo {
+.h5p-advanced-blanks {
     position: relative;
 }
 
 
 /* Text */
 
-.h5p-advanced-blanks-papijo #h5p-cloze-container p,
-.h5p-advanced-blanks-papijo #h5p-cloze-container div {
+.h5p-advanced-blanks #h5p-cloze-container p,
+.h5p-advanced-blanks #h5p-cloze-container div {
     line-height: 1.8em;
     margin: 0 0 1em;
     text-align: justify;
 }
 
 @media only screen and (min-width: 480px) {
-    .h5p-advanced-blanks-papijo #h5p-cloze-container p,
-    .h5p-advanced-blanks-papijo #h5p-cloze-container div {
+    .h5p-advanced-blanks #h5p-cloze-container p,
+    .h5p-advanced-blanks #h5p-cloze-container div {
         text-align: unset;
     }
 }
@@ -23,12 +23,12 @@
 
 /* Input */
 
-.h5p-advanced-blanks-papijo .h5p-input-wrapper {
+.h5p-advanced-blanks .h5p-input-wrapper {
     display: inline-block;
     position: relative;
 }
 
-.h5p-advanced-blanks-papijo .blank .h5p-text-input {
+.h5p-advanced-blanks .blank .h5p-text-input {
     font-family: 'Roboto Mono', 'Lucida Console', Courier, monospace;
     font-size: 1em;
     border-radius: 0.25em;
@@ -38,11 +38,11 @@
     overflow: hidden;
 }
 
-.h5p-advanced-blanks-papijo .blank input.h5p-text-input {
+.h5p-advanced-blanks .blank input.h5p-text-input {
   max-width: calc(100vw - 64px);
 }
 
-.h5p-advanced-blanks-papijo .blank select.h5p-text-input {
+.h5p-advanced-blanks .blank select.h5p-text-input {
   max-width: calc(100vw - 36px);
 }
 
@@ -68,7 +68,7 @@ select.h5p-text-input {
 
 /* Showing solution input */
 
-.h5p-advanced-blanks-papijo .blank.showing-solution .h5p-text-input {
+.h5p-advanced-blanks .blank.showing-solution .h5p-text-input {
     border: 1px dashed #9dd8bb;
     color: #255c41;
     background: #FFFFFF;
@@ -77,7 +77,7 @@ select.h5p-text-input {
 
 /* Focussed input */
 
-.h5p-advanced-blanks-papijo .blank .h5p-text-input:focus {
+.h5p-advanced-blanks .blank .h5p-text-input:focus {
     outline: none;
     box-shadow: 0 0 0.5em 0 #7fb8ff;
     border-color: #7fb8ff;
@@ -85,14 +85,14 @@ select.h5p-text-input {
 
 /* Correctly answered input */
 
-.h5p-advanced-blanks-papijo .blank.correct .h5p-text-input {
+.h5p-advanced-blanks .blank.correct .h5p-text-input {
     background: #9dd8bb;
     background: #9dd8bb70;
     border: 1px solid #9dd8bb;
     color: #255c41;
 }
 
-.h5p-advanced-blanks-papijo .blank.correct .h5p-input-wrapper:after {
+.h5p-advanced-blanks .blank.correct .h5p-input-wrapper:after {
     position: absolute;
     right: 0px;    
     transform: translateY(-50%);
@@ -105,7 +105,7 @@ select.h5p-text-input {
 
 /* Spelling errors */
 
-.h5p-advanced-blanks-papijo .blank.retry .h5p-text-input {
+.h5p-advanced-blanks .blank.retry .h5p-text-input {
     background-color: #ffff99;
     border: 1px solid #ffff99;
     color: black;
@@ -113,17 +113,17 @@ select.h5p-text-input {
 
 /* Incorrect answers */
 
-.h5p-advanced-blanks-papijo .blank.error .h5p-text-input {
+.h5p-advanced-blanks .blank.error .h5p-text-input {
     background-color: #f7d0d0;
     border: 1px solid #f7d0d0;
     color: #b71c1c;
     text-decoration: line-through;
 }
 
-.h5p-advanced-blanks-papijo .blank.error .h5p-input-wrapper:after,
-.h5p-advanced-blanks-papijo .blank.retry .h5p-input-wrapper:after,
-.h5p-advanced-blanks-papijo .blank.has-tip.error .h5p-input-wrapper:after,
-.h5p-advanced-blanks-papijo .blank.has-tip.retry .h5p-input-wrapper:after {
+.h5p-advanced-blanks .blank.error .h5p-input-wrapper:after,
+.h5p-advanced-blanks .blank.retry .h5p-input-wrapper:after,
+.h5p-advanced-blanks .blank.has-tip.error .h5p-input-wrapper:after,
+.h5p-advanced-blanks .blank.has-tip.retry .h5p-input-wrapper:after {
     position: absolute;
     right: 0px;
     top: 5px;
@@ -134,14 +134,14 @@ select.h5p-text-input {
     color: #b71c1c;
 }
 
-.h5p-advanced-blanks-papijo .blank.has-tip.error .h5p-input-wrapper:after,
-.h5p-advanced-blanks-papijo .blank.has-tip.retry .h5p-input-wrapper:after {
+.h5p-advanced-blanks .blank.has-tip.error .h5p-input-wrapper:after,
+.h5p-advanced-blanks .blank.has-tip.retry .h5p-input-wrapper:after {
     right: 1.4em;
 }
 
 /* Buttons */
 
-.h5p-advanced-blanks-papijo .blank button {
+.h5p-advanced-blanks .blank button {
     padding-left: 5px;
     padding-right: 5px;
     border: none;
@@ -177,7 +177,7 @@ select.h5p-text-input {
 
 /* Highlights in text */
 
-.h5p-advanced-blanks-papijo .highlighted {
+.h5p-advanced-blanks .highlighted {
     background-color: rgba(255, 0, 0, 0.2);
     padding: 0.4em;
     margin: -0.4em;
@@ -199,59 +199,59 @@ select.h5p-text-input {
 
 /* Others */
 
-.h5p-advanced-blanks-papijo .invisible {
+.h5p-advanced-blanks .invisible {
     visibility: collapse;
 }
 
 
 /* Tips */
 /* papi Jo position tip in the top right corner */
-.h5p-advanced-blanks-papijo .h5p-tip-container {
+.h5p-advanced-blanks .h5p-tip-container {
   position: absolute;
   transform: translateY(-50%);
   right: 0em;
   top: 0.7em;
 }
 
-.h5p-advanced-blanks-papijo .joubel-tip-container {
+.h5p-advanced-blanks .joubel-tip-container {
   display: inline;
   padding-top: 6px;
 }
 
-.h5p-advanced-blanks-papijo .blank.has-tip:not(.correct):not(.error):not(.retry):not(.showing-solution) .h5p-text-input {
+.h5p-advanced-blanks .blank.has-tip:not(.correct):not(.error):not(.retry):not(.showing-solution) .h5p-text-input {
     padding-right: 2.25em;
 }
 /* papi Jo these settings do not seem necessary */
-.h5p-advanced-blanks-papijo .blank.has-tip.correct .h5p-input-wrapper:after,
-.h5p-advanced-blanks-papijo .blank.has-tip.error .h5p-input-wrapper:after,
-.h5p-advanced-blanks-papijo .blank.has-tip.retry .h5p-input-wrapper:after {
+.h5p-advanced-blanks .blank.has-tip.correct .h5p-input-wrapper:after,
+.h5p-advanced-blanks .blank.has-tip.error .h5p-input-wrapper:after,
+.h5p-advanced-blanks .blank.has-tip.retry .h5p-input-wrapper:after {
     //right: 2.25em;
 }
 
-.h5p-advanced-blanks-papijo .blank.correct.has-tip .h5p-text-input,
-.h5p-advanced-blanks-papijo .blank.error.has-tip .h5p-text-input,
-.h5p-advanced-blanks-papijo .blank.retry.has-tip .h5p-text-input {
+.h5p-advanced-blanks .blank.correct.has-tip .h5p-text-input,
+.h5p-advanced-blanks .blank.error.has-tip .h5p-text-input,
+.h5p-advanced-blanks .blank.retry.has-tip .h5p-text-input {
     //padding-right: 3.5em;
 }
 
 /* improves appearance of h5p tip shadows */
-.h5p-advanced-blanks-papijo .joubel-icon-tip-normal .h5p-icon-shadow:before {
+.h5p-advanced-blanks .joubel-icon-tip-normal .h5p-icon-shadow:before {
   color: black;
   opacity: 0.13;
 }
 
 /* pending feedback marker */
 
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-select-mode .blank:not(.has-pending-feedback) button.h5p-notification {
+.h5p-advanced-blanks .blank:not(.has-pending-feedback) button.h5p-notification {
     display: none;
 }
 
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-select-mode .blank.has-pending-feedback button.h5p-notification {
+.h5p-advanced-blanks .blank.has-pending-feedback button.h5p-notification {
     font-size: large;    
 }
 
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-select-mode .blank.has-pending-feedback button.h5p-notification,
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-type-mode .blank.has-pending-feedback .h5p-input-wrapper:before {
+.h5p-advanced-blanks .blank.has-pending-feedback button.h5p-notification,
+.h5p-advanced-blanks .blank.has-pending-feedback .h5p-input-wrapper:before {
     font-family: 'H5PFontAwesome4';
     text-decoration: none;
     animation: shake 3s cubic-bezier(.36, .07, .19, .97) reverse;
@@ -261,26 +261,26 @@ select.h5p-text-input {
     perspective: 1000px;
 }
 
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-type-mode .blank.has-pending-feedback .h5p-input-wrapper:before {
+.h5p-advanced-blanks .h5p-advanced-blanks-type-mode .blank.has-pending-feedback .h5p-input-wrapper:before {
     position: absolute;
     left: -0.4em;
     top: -0.7em;
     content: "\f05a";
 }
 
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-select-mode .blank.error.has-pending-feedback button.h5p-notification,
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-type-mode .blank.error.has-pending-feedback .h5p-input-wrapper:before {
+.h5p-advanced-blanks .blank.error.has-pending-feedback button.h5p-notification,
+.h5p-advanced-blanks .blank.error.has-pending-feedback .h5p-input-wrapper:before {
     color: #b71c1c;
 }
 
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-select-mode .blank.retry.has-pending-feedback button.h5p-notification,
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-type-mode .blank.retry.has-pending-feedback .h5p-input-wrapper:before {
+.h5p-advanced-blanks .blank.retry.has-pending-feedback button.h5p-notification,
+.h5p-advanced-blanks .blank.retry.has-pending-feedback .h5p-input-wrapper:before {
     color: #ffff00;
     text-shadow: 0px 0px 0.5em black;
 }
 /* papi Jo color green for correct answer feedback button */
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-select-mode .blank.correct.has-pending-feedback button.h5p-notification,
-.h5p-advanced-blanks-papijo .h5p-advanced-blanks-papijo-type-mode .blank.correct.has-pending-feedback .h5p-input-wrapper:before {
+.h5p-advanced-blanks .blank.correct.has-pending-feedback button.h5p-notification,
+.h5p-advanced-blanks .blank.correct.has-pending-feedback .h5p-input-wrapper:before {
     color: #267d53;
 }
 

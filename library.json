@@ -3,9 +3,9 @@
   "description": "Fill the blanks exercise with individual feedback",
   "majorVersion": 1,
   "minorVersion": 2,
-  "patchVersion": 6,
+  "patchVersion": 7,
   "runnable": 1,
-  "author": "S. Rettig",
+  "authors": "S. Rettig & Joseph Rézeau (papi Jo)",
   "license": "MIT",
   "machineName": "H5P.AdvancedBlanksPapiJo",
   "coreApi": {
