@@ -1,8 +1,8 @@
 export class XAPIActivityDefinition {
-  name: any;
-  description: any;
+  name;
+  description;
   type: string;
   interactionType: "true-false" | "choice" | "fill-in" | "long-fill-in" | "matching" | "performance" | "sequencing" | "likert" | "numeric" | "other";
   correctResponsesPattern?: string[];
-  extensions: any;
+  extensions;
 }

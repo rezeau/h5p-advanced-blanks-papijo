@@ -30,7 +30,7 @@ export class BlankLoader {
     return elem.value;
   }
 
-  public createBlank(id: string, correctText: string, correctFeedback : string, hintText: string, incorrectAnswers: any[]): Blank {
+  public createBlank(id: string, correctText: string, correctFeedback : string, hintText: string, incorrectAnswers): Blank {
     const blank = new Blank(this.settings, this.localization, this.jquery, this.messageService, id)
     if (correctText) {
       correctText = this.decodeHtml(correctText);

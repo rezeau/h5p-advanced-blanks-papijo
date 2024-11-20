@@ -113,7 +113,7 @@ export class ClozeController {
     this.jquery = jquery;
     this.isSelectCloze = this.settings.clozeType === ClozeType.Select ? true : false;
 
-    var blanks = this.repository.getBlanks();
+    const blanks = this.repository.getBlanks();
 
     // Stop ractive debug mode
     Ractive.DEBUG = false;
@@ -241,7 +241,7 @@ export class ClozeController {
   }
 
   private createBlankBinding(blank: Blank) {
-    var ractive = new Ractive({
+    const ractive = new Ractive({
       el: '#container_' + blank.id,
       template: blankTemplate,
       data: {
@@ -280,7 +280,6 @@ export class ClozeController {
    * was changed
    */
   private refreshCloze() {
-  //console.log('refreshCloze');
     for (const highlight of this.cloze.highlights) {
       const highlightRactive = this.highlightRactives[highlight.id];
       highlightRactive.set("object", highlight);
@@ -294,7 +293,6 @@ export class ClozeController {
         blank.currTextLength = blank.enteredText.length + tickSpacer;
       } else  {
         if (blank.enteredText) {
-        //console.log('blank.enteredText');
           // Auto grow input field to accomodate entered text!
           if (blank.hasHint && (blank.isError || blank.isRetry)) {
             tickSpacer = 2;
@@ -303,7 +301,6 @@ export class ClozeController {
         } else {
           blank.currTextLength = blank.minTextLength;
         }
-        console.log('blank.currTextLength = ' + blank.currTextLength);
       }
       blankRactive.set("blank", blank);
     }
@@ -326,7 +323,7 @@ export class ClozeController {
     return this.cloze.serialize();
   }
 
-  public deserializeCloze(data: any): boolean {
+  public deserializeCloze(data: object): boolean {
     if (!this.cloze || !data)
       return false;
     this.cloze.deserialize(data);

@@ -20,7 +20,7 @@ export enum LocalizationStructures {
  */
 
 export class H5PLocalization {
-  constructor(private h5pConfiguration: any) {
+  constructor(private h5pConfiguration) {
 
   }
 
@@ -45,7 +45,7 @@ export class H5PLocalization {
     return this.getText(this.labelToString(label));
   }
 
-  getObjectForStructure(structure: LocalizationStructures) : any {
+  getObjectForStructure(structure: LocalizationStructures) {
     return this.h5pConfiguration[structure.toString()];
   }
 }

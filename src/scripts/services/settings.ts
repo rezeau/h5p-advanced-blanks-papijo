@@ -38,7 +38,7 @@ export class H5PSettings implements ISettings {
   public disableImageZooming: boolean = false;
   
 
-  constructor(h5pConfigData: any) {
+  constructor(h5pConfigData) {
     if (h5pConfigData.behaviour.mode === 'selection') {
       this.clozeType = ClozeType.Select;
     }

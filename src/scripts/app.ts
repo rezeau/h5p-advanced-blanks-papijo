@@ -31,7 +31,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): Inst
   private jQuery;
 
   private contentId: string;
-  private previousState: any;
+  private previousState: object;
   private state: States;
 
   /**
@@ -46,7 +46,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): Inst
    * @param {string} contentId
    * @param {object} contentData
    */
-  constructor(config: any, contentId: string, contentData: any = {}) {
+  constructor(config: object, contentId: string, contentData) {
     super();
 
     // Set mandatory default values for editor widgets that create content type instances

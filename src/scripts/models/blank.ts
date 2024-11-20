@@ -32,7 +32,7 @@ export class Blank extends ClozeElement {
   message: string;
   minTextLength: number;
   currTextLength: number;
-  speechBubble: any;
+  //speechBubble;
 
   /**
    * Add incorrect answers after initializing the object. Call finishInitialization()
@@ -98,19 +98,19 @@ export class Blank extends ClozeElement {
    */
   // TODO: refactor
   private calculateMinTextLength(): void {
-    var answers: string[] = new Array();
-    for (let correctAnswer of this.correctAnswers) {
+    const answers: string[] = [];
+    for (const correctAnswer of this.correctAnswers) {
       answers.push(getLongestString(correctAnswer.alternatives));
     }
 
     if (this.settings.clozeType === ClozeType.Select) {
-      for (let incorrectAnswer of this.incorrectAnswers) {
+      for (const incorrectAnswer of this.incorrectAnswers) {
         answers.push(getLongestString(incorrectAnswer.alternatives));
       }
     }
 
-    var longestAnswer = getLongestString(answers);
-    var l = longestAnswer.length;
+    const longestAnswer = getLongestString(answers);
+    const l = longestAnswer.length;
     this.minTextLength = Math.max(10, l - (l % 10) + 10);
   }
 
@@ -422,7 +422,7 @@ export class Blank extends ClozeElement {
     return this.enteredText;
   }
 
-  public deserialize(data: any) {
+  public deserialize(data: string) {
     this.enteredText = data;
   }
 }

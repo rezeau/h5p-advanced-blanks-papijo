@@ -10,7 +10,7 @@ export interface IDataRepository {
   getBlanks(): Blank[];
   getClozeText(): string;
   getFeedbackText(): string;
-  getMedia(): any;
+  getMedia();
   getTaskDescription(): string;
   getSnippets(): Snippet[];
 }
@@ -19,7 +19,7 @@ export interface IDataRepository {
  * Wraps around the h5p config object and provides access to the content.
  */
 export class H5PDataRepository implements IDataRepository {
-  constructor(private h5pConfigData: any, private settings: ISettings,
+  constructor(private h5pConfigData, private settings: ISettings,
     private localization: H5PLocalization, private jquery: JQueryStatic, 
     private unwrapper: Unrwapper) {
 
@@ -37,7 +37,7 @@ export class H5PDataRepository implements IDataRepository {
     return "";
   }
 
-  getMedia(): any {
+  getMedia() {
     return this.h5pConfigData.media.type;
   }
 

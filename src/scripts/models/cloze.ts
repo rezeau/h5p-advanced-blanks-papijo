@@ -49,7 +49,7 @@ export class Cloze {
     return cloze;
   }
 
-  public deserialize(data: any) {
+  public deserialize(data) {
     for (let index = 0; index < data.length; index++) {
       if (index >= this.blanks.length)
         return;

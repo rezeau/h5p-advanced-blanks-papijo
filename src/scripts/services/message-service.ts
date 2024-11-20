@@ -2,9 +2,9 @@ import { Blank } from '../models/blank';
 import { MessageType } from '../models/enums';
 
 export class MessageService {
-  private speechBubble: any;
+  private speechBubble;
   private associatedBlank: Blank;
-
+  
   constructor(private jQuery: JQueryStatic) {
 
   }
