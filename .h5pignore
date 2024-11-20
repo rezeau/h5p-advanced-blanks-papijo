@@ -26,3 +26,5 @@ TODO
 h5p-hub-metadata.md
 package-lock.json
 .vscode
+LICENSE
+eslint.config.mjs

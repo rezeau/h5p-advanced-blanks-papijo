@@ -1,18 +1,18 @@
 {
   "name": "h5p-advanced-blanks-papijo",
-  "version": "1.1.0",
-  "description": "Fill the blanks exercise with individual feedback",
+  "version": "1.2.7",
+  "description": "Fill the blanks exercise with individual feedback version papijo",
   "private": true,
   "scripts": {
     "eslint": "eslint src/**/",
     "test": "npx ava",
-    "dist": "webpack --mode=development && cp node_modules/ractive/ractive.min.js ./dist",
-    "build": "webpack --mode=production",
+    "build": "webpack --mode=development && cp node_modules/ractive/ractive.min.js ./dist",
+    "dist": "webpack --mode=production",
     "watch": "webpack --watch --mode=development"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sr258/h5p-advanced-blanks.git"
+    "url": "git+https://github.com/rezeau/h5p-advanced-blanks-papijo.git"
   },
   "keywords": [
     "h5p",

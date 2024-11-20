@@ -23,9 +23,10 @@
         {
           "label": "Text with blanks",
           "important": {
-            "description": "<ul><li>Blanks must be marked with __________ (three or more underscores).</li><li>Do not put the solutions into the text.</li></ul>",
+            "description": "<ul><li>Tutorial and Examples: <a href=\"http://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Papi Jo's H5P Moodle site</a></span></li><li>Blanks must be marked with __________ (three or more underscores).</li><li>Do not put the solutions into the text.</li></ul>",
             "example": "I have _________ wanted to visit Norway."
-          }
+          },
+          "description": ""
         },
         {
           "label": "Blanks used in the text",
@@ -46,11 +47,14 @@
                 "label": "Hint"
               },
               {
+                "label": "Feedback for correct answer",
+                "description": "This feedback should confirm that the user found the correct answer in order to re-enforce his choice."
+              },
+              {
                 "label": "Incorrect answers",
                 "entity": "incorrect answer",
                 "field": {
                   "label": "Incorrect answer",
-                  "description": "You can separate alternative answers with a slash (/).",
                   "fields": [
                     {
                       "label": "Incorrect answer text"
@@ -99,7 +103,7 @@
       "fields": [
         {
           "label": "Snippet list",
-          "description": "Snippets are texts that can be reused in feedback texts by inserting @snippetname into the it.",
+          "description": "Snippets are texts that can be reused in feedback texts by inserting @snippetname into the text.",
           "entity": "snippet",
           "field": {
             "label": "Snippet",
@@ -163,16 +167,20 @@
           "label": "Alternatives offered for selection",
           "options": [
             {
-              "label": "The incorrect answers entered for the blank"
+              "label": "The correct and incorrect answers entered for the blank"
             },
             {
-              "label": "The correct answers of all other blanks"
+              "label": "The correct answers of the blank and all the other blanks"
             }
           ]
         },
         {
-          "label": "Maximum number of alternatives of other blanks offered for selection",
+          "label": "Maximum number of total alternatives offered for selection",
           "description": "Enter 0 to set no limit."
+        },
+        {
+          "label": "Use Regular Expressions",
+          "description": "If enabled, correct and incorrect answers will be analysed using the regular expressions provided. Use this only if you know what you are doing!"
         },
         {
           "label": "Behaviour when user makes a spelling error",
@@ -202,13 +210,18 @@
           "label": "Require all fields to be answered before the solution can be viewed"
         },
         {
+          "label": "Show all alternative solutions",
+          "description": "If your blanks have more than one correct solution, check this to display all the alternatives."
+        },
+        {
           "label": "Enable \"Retry\""
         },
         {
           "label": "Enable \"Check\" button"
         },
         {
-          "label": "Show confirmation dialog on \"Check\""
+          "label": "Show confirmation dialog on \"Check\"",
+          "description": "This options is not compatible with the \"Automatically check answers after input\" option"
         },
         {
           "label": "Show confirmation dialog on \"Retry\""
@@ -226,10 +239,6 @@
     {
       "label": "Text for \"Check\" button",
       "default": "Check"
-    },
-    {
-      "label": "Text for \"Submit\" button",
-      "default": "Submit"
     },
     {
       "label": "Text for \"Not filled out\" message",

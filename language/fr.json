@@ -23,9 +23,9 @@
         {
           "label": "Texte à trous",
           "important": {
-            "description": "<ul><li>Les blancs doivent être marqués avec __________ (trois traits de soulignement ou plus).</li><li>Ne pas mettre les solutions dans le texte.</li></ul>",
-            "example": "I have _________ wanted to visit Norway."
-          }
+            "description": "<ul><li>Tutoriel & Exemples: <a href=\"http://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Papi Jo's H5P Moodle site</a></span></li><li>Les blancs doivent être signalés par __________ (trois ou plusieurs traits de soulignement). </li><li>N'insérez pas les solutions dans le texte.</li></ul>"
+          },
+          "description": ""
         },
         {
           "label": "Paramétrage des blancs utilisés dans le texte",
@@ -44,6 +44,10 @@
               },
               {
                 "label": "Indice"
+              },
+              {
+                "label": "Feedback pour les réponses correctes",
+                "description": "Ce feedback doit confirmer que l’étudiant a trouvé la bonne réponse afin de le conforter dans son choix."
               },
               {
                 "label": "Réponses incorrectes",
@@ -175,6 +179,10 @@
           "description": "Entrez 0 pour ne définir aucune limite."
         },
         {
+          "label": "Utiliser les expressions régulières",
+          "description": "Si cette option est activée, les réponses correctes et incorrectes seront analysées à l'aide des expressions régulières fournies. N'utilisez cette option que si vous savez ce que vous faites !"
+        },
+        {
           "label": "Comportement lorsque l'utilisateur fait une faute d'orthographe",
           "options": [
             {
@@ -202,13 +210,18 @@
           "label": "Obliger l'utilisateur à remplir tous les blancs avant de voir la correction."
         },
         {
+          "label": "Afficher toutes les solutions alternatives",
+          "description": "Si vos blancs ont plus d'une solution correcte, cochez cette case pour afficher toutes les alternatives."
+        },
+        {
           "label": "Activer le bouton \"Recommencer\""
         },
         {
           "label": "Activer le bouton \"Vérifier\""
         },
         {
-          "label": "Afficher la fenêtre de confirmation pour \"Vérifier\""
+          "label": "Afficher la fenêtre de confirmation pour \"Vérifier\"",
+          "description": "Cette option n'est pas compatible avec l'option \"Vérifier les réponses instantanément dès la saisie.\""
         },
         {
           "label": "Afficher la fenêtre de confirmation pour \"Recommencer\""
@@ -226,10 +239,6 @@
     {
       "label": "Texte du bouton \"Vérifier\"",
       "default": "Vérifier"
-    },
-    {
-      "label": "Text for \"Submit\" button",
-      "default": "Submit"
     },
     {
       "label": "Texte pour le message \"Tout n'est pas complété\"",

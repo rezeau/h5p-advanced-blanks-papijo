@@ -23,7 +23,7 @@ npm install
 Copy all relevant files to ``dist`` directory
 
 ```bash
-npm run dist
+npm run build
 ```
 
 Watch project in development mode:
@@ -33,6 +33,6 @@ npm run watch
 
 Build project in production mode:
 ```bash
-npm run build
+npm run dist
 ```
 
