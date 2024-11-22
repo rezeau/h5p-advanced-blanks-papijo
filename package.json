@@ -5,10 +5,9 @@
   "private": true,
   "scripts": {
     "eslint": "eslint src/**/",
-    "test": "npx ava",
-    "build": "webpack --mode=development && cp node_modules/ractive/ractive.min.js ./dist",
+    "build": "webpack --mode=production && cp node_modules/ractive/ractive.min.js ./dist",
     "dist": "webpack --mode=production",
-    "watch": "webpack --watch --mode=development"
+    "watch": "webpack --mode=development --watch"
   },
   "repository": {
     "type": "git",

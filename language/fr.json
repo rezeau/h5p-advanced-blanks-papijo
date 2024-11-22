@@ -23,9 +23,9 @@
         {
           "label": "Texte à trous",
           "important": {
-            "description": "<ul><li>Tutoriel & Exemples: <a href=\"http://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Papi Jo's H5P Moodle site</a></span></li><li>Les blancs doivent être signalés par __________ (trois ou plusieurs traits de soulignement). </li><li>N'insérez pas les solutions dans le texte.</li></ul>"
-          },
-          "description": ""
+            "description": "<ul><li>Tutoriel & Exemples: <a href=\"http://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Papi Jo's H5P Moodle site</a></span></li><li>Les blancs doivent être signalés par __________ (trois ou plusieurs traits de soulignement). </li><li>N'insérez pas les solutions dans le texte.</li></ul>",
+            "example": "I have _________ wanted to visit Norway."
+          }
         },
         {
           "label": "Paramétrage des blancs utilisés dans le texte",
@@ -53,8 +53,7 @@
                 "label": "Réponses incorrectes",
                 "entity": "réponse incorrecte",
                 "field": {
-                  "label": "Réponse incorrecte",
-                  "description": "Vous pouvez séparer les réponses alternatives par une barre oblique (/).",
+                  "label": "Réponse incorrecte"
                   "fields": [
                     {
                       "label": "Texte de la réponse incorrecte"

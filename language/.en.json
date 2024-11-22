@@ -23,10 +23,9 @@
         {
           "label": "Text with blanks",
           "important": {
-            "description": "<ul><li>Tutorial and Examples: <a href=\"http://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Papi Jo's H5P Moodle site</a></span></li><li>Blanks must be marked with __________ (three or more underscores).</li><li>Do not put the solutions into the text.</li></ul>",
+            "description": "<ul><li>Tutorial and Examples: <a href=\"https://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Papi Jo's H5P Moodle site</a></span></li><li>Blanks must be marked with __________ (three or more underscores).</li><li>Do not put the solutions into the text.</li></ul>",
             "example": "I have _________ wanted to visit Norway."
-          },
-          "description": ""
+          }
         },
         {
           "label": "Blanks used in the text",
