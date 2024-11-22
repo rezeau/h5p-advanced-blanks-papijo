@@ -9,6 +9,8 @@ This is an advanced 'Fill the blanks' content type for h5p (papijo version). In 
 
 It's main use is for foreign language learning, where you can give the users individual hints, why certain tenses or word forms can't be used in this case. While it is possible to have a 'Check' button at the end, it makes more sense to use the auto-check setting as the user is guided through the 'fill the blanks' exercise blank by blank.
 
+Detailed information about the new features added by the papi Jo version at https://www.rezeau.org/moodle/mod/page/view.php?id=269
+
 ## Architecture
 
 This content type uses parts of h5p-blanks but is not based on it, as it was ported over from a widget written by the author for LearningApps.org. It uses a MVC style architecture with Ractive as the library responsible for creating the views. It is written in TypeScript.
@@ -20,7 +22,7 @@ Grab all the modules:
 ```bash
 npm install
 ```
-Copy all relevant files to ``dist`` directory
+Copy all relevant files to ``dist`` directory and build project in production mode:
 
 ```bash
 npm run build
@@ -31,8 +33,4 @@ Watch project in development mode:
 npm run watch
 ```
 
-Build project in production mode:
-```bash
-npm run dist
-```
 

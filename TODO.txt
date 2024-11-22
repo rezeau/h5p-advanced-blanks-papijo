@@ -1,3 +1,5 @@
+This is the list of TODOs established by Sebastian Rettig, the original creator of the H5P Advanced FITB content. Retained for the sake of history tracking.
+
 High priority: 
 ==============
 

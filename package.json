@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "eslint": "eslint src/**/",
-    "build": "webpack --mode=production && cp node_modules/ractive/ractive.min.js ./dist",
-    "dist": "webpack --mode=production",
+    "build": "webpack --mode=production && [ ! -e ./dist/ractive.min.js ] && cp node_modules/ractive/ractive.min.js ./dist",
     "watch": "webpack --mode=development --watch"
   },
   "repository": {
@@ -17,7 +16,7 @@
     "h5p",
     "library"
   ],
-  "author": "Joubel",
+  "author": "Joubel & Sebastian Rettig & Joseph Rézeau (aka papi Jo)",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.18.10",
