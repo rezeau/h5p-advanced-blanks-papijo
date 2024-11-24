@@ -23,8 +23,8 @@
         {
           "label": "Texte à trous",
           "important": {
-            "description": "<ul><li>Tutoriel & Exemples: <a href=\"http://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Papi Jo's H5P Moodle site</a></span></li><li>Les blancs doivent être signalés par __________ (trois ou plusieurs traits de soulignement). </li><li>N'insérez pas les solutions dans le texte.</li></ul>",
-            "example": "I have _________ wanted to visit Norway."
+            "description": "<ul><li>Tutoriel et exemples sur le site Moodle/H5P de Papi Jo ici:  tinyurl.com/blanksfr</li><li>Les blancs doivent être signalés par ____ (trois ou plus traits de soulignement).</li><li>N'insérez pas les solutions dans le texte.</li></ul>",
+            "example": "J'ai ____ voulu visiter la Bretagne."
           }
         },
         {
@@ -32,18 +32,18 @@
           "entity": "blanc",
           "widgets": [
             {
-              "label": "Par défaut"
+              "label": "Default"
             }
           ],
           "field": {
-            "label": "blanc",
+            "label": "Blank",
             "fields": [
               {
                 "label": "Réponse correcte",
                 "description": "Vous pouvez séparer les réponses alternatives par une barre oblique (/)."
               },
               {
-                "label": "Indice"
+                "label": "Hint"
               },
               {
                 "label": "Feedback pour les réponses correctes",
@@ -53,7 +53,7 @@
                 "label": "Réponses incorrectes",
                 "entity": "réponse incorrecte",
                 "field": {
-                  "label": "Réponse incorrecte"
+                  "label": "Réponse incorrecte",
                   "fields": [
                     {
                       "label": "Texte de la réponse incorrecte"
