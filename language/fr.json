@@ -23,7 +23,7 @@
         {
           "label": "Texte à trous",
           "important": {
-            "description": "<ul><li>Tutoriel et exemples sur le site Moodle/H5P de Papi Jo ici:  tinyurl.com/blanksfr</li><li>Les blancs doivent être signalés par ____ (trois ou plus traits de soulignement).</li><li>N'insérez pas les solutions dans le texte.</li></ul>",
+            "description": "<ul><li>Tutoriel et exemples sur le site Moodle/H5P de Papi Jo ici:  tinyurl.com/blanks-fr</li><li>Les blancs doivent être signalés par ____ (trois ou plus traits de soulignement).</li><li>N'insérez pas les solutions dans le texte.</li></ul>",
             "example": "J'ai ____ voulu visiter la Bretagne."
           }
         },
@@ -64,7 +64,7 @@
                     },
                     {
                       "label": "Surligner le texte lorsque le feedback est affiché",
-                      "description": "Mettez !! avant et après un élément du texte pour le marquer comme devant être surligné. (par exemple, ceci est !!un élément surligné !!)"
+                      "description": "Mettez !! OU [[ et ]] avant et après un élément du texte pour le marquer comme devant être surligné. Exemple: Ceci est !!un élément surligné!! OU Ceci est [[un élément surligné]]"
                     },
                     {
                       "label": "Position de l'élément à mettre en surbrillance par rapport au blanc :",

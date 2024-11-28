@@ -3,6 +3,7 @@ import { ClozeElement, ClozeElementType } from '../models/cloze-element';
 import { Blank } from '../models/blank';
 import { Highlight } from '../models/highlight';
 import { Cloze } from "../models/cloze";
+import { replaceDoubleExclamations } from "../../lib/helpers";
 
 /**
  * Loads a cloze object.
@@ -19,17 +20,20 @@ export class ClozeLoader {
     let orderedAllElementsList: ClozeElement[] = [];
     let highlightInstances: Highlight[] = [];
     let blanksInstances: Blank[] = [];
-
-    html = ClozeLoader.normalizeBlankMarkings(html);
-
-    const conversionResult = ClozeLoader.convertMarkupToSpans(html, blanks);
-    html = conversionResult.html;
-    orderedAllElementsList = conversionResult.orderedAllElementsList;
-    highlightInstances = conversionResult.highlightInstances;
-    blanksInstances = conversionResult.blanksInstances;
-
-    ClozeLoader.linkHighlightsObjects(orderedAllElementsList, highlightInstances, blanksInstances);
-
+    // Replace !!*!! old highlighted markers with new [[*]] markers.
+    html = replaceDoubleExclamations(html);
+    // If checkHighlightMarkers function has detected pairing error, then skip creating question creation.
+    const isOKhtml = !(html.startsWith("ERROR"));
+    if (isOKhtml) {
+      html = ClozeLoader.normalizeBlankMarkings(html);
+      const conversionResult = ClozeLoader.convertMarkupToSpans(html, blanks);
+      html = conversionResult.html;
+      orderedAllElementsList = conversionResult.orderedAllElementsList;
+      highlightInstances = conversionResult.highlightInstances;
+      blanksInstances = conversionResult.blanksInstances;
+    
+      ClozeLoader.linkHighlightsObjects(orderedAllElementsList, highlightInstances, blanksInstances);
+    }
     const cloze = new Cloze();
     cloze.html = html;
     cloze.blanks = blanksInstances;
@@ -53,7 +57,7 @@ export class ClozeLoader {
     const highlightInstances: Highlight[] = [];
     const blanksInstances: Blank[] = [];
 
-    const exclamationMarkRegExp = /!!(.{1,40}?)!!/i;
+    const exclamationMarkRegExp = /\[\[(.{1,40}?)\]\]/i;
     let highlightCounter = 0;
     let blankCounter = 0;
     let nextHighlightMatch;

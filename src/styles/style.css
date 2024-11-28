@@ -185,12 +185,30 @@ select.h5p-text-input {
     animation-direction: alternate;
 }
 
+.h5p-advanced-blanks .highlighted.unpaired {
+    background-color: yellow;
+    animation-duration: 1000ms;
+    animation-name: blink-background-color-unpaired;
+    animation-iteration-count: 15;
+    animation-direction: alternate;
+}
+
+
 @keyframes blink-background-color {
     from {
         background-color: initial;
     }
     to {
         background-color: rgba(255, 0, 0, 0.2);
+    }
+}
+
+@keyframes blink-background-color-unpaired {
+    from {
+        background-color: initial;
+    }
+    to {
+        background-color: yellow;
     }
 }
 
@@ -245,7 +263,8 @@ select.h5p-text-input {
 }
 
 .h5p-advanced-blanks .blank.has-pending-feedback button.h5p-notification {
-    font-size: large;    
+    font-size: large;
+    cursor: help;
 }
 
 .h5p-advanced-blanks .blank.has-pending-feedback button.h5p-notification,

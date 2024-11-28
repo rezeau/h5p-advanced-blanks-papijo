@@ -23,7 +23,7 @@
         {
           "label": "Text with blanks",
           "important": {
-            "description": "<ul><li>Tutorial and Examples: Papi Jo's H5P Moodle site at tinyurl.com/blanksen</li><li>Blanks must be marked with __________ (three or more underscores).</li><li>Do not put the solutions into the text.</li></ul>",
+            "description": "<ul><li>Tutorial and Examples: Papi Jo's H5P Moodle site at tinyurl.com/blanks-en</li><li>Blanks must be marked with __________ (three or more underscores).</li><li>Do not put the solutions into the text.</li></ul>",
             "example": "I have ____ wanted to visit Norway."
           }
         },

@@ -47,3 +47,63 @@ export function checkBalancedBrackets(alternatives) {
   }
   return wrongAlternatives.join('\n');
 }
+
+/* Check that highlighted words markers are correctly balanced: [[...]] */
+export function checkBalancedHighlightMarkers(input: string): string {
+    // Regular expression to match pairs of [[...]] or standalone [[ or ]]
+    const exclamationPattern = /\[\[(.*?)\]\]|\]\]|\[\[/g;
+
+    // Variables for tracking and constructing the transformed string
+    let transformedString = "";
+    let lastIndex = 0;
+    let hasUnbalanced = false; // Flag to track if unbalanced pairs exist
+
+    // Match all instances of [[ or ]] in the string
+    let match;
+    while ((match = exclamationPattern.exec(input)) !== null) {
+        const startIndex = match.index; // Start position of the current match
+        const fullMatch = match[0];    // Entire matched string
+
+        // Add text between the last match and this match to the transformed string
+        transformedString += input.slice(lastIndex, startIndex);
+
+        if (match[1] !== undefined) {
+            // Balanced pair, keep as is
+            transformedString += fullMatch;
+        } else {
+            // Unpaired [[ or ]], wrap in unpairedhighlighted span
+            transformedString += `<span class="highlighted unpaired">${fullMatch}</span>`;
+            hasUnbalanced = true; // Mark unbalanced pairs
+        }
+
+        // Update last processed index
+        lastIndex = startIndex + fullMatch.length;
+    }
+
+    // Append any remaining text after the last match
+    transformedString += input.slice(lastIndex);
+
+    // If no unbalanced [[...]] were found, return an empty string
+    return hasUnbalanced ? transformedString : "";
+}
+
+export function replaceDoubleExclamations(input: string): string {
+    // Regular expression to find all occurrences of "!!"
+    const exclamationPattern = /!!/g;
+
+    // Counter to toggle between opening "[[" and closing "]]"
+    let toggle = true;
+
+    // Replace each "!!" with "[[" or "]]" alternately
+    const transformedString = input.replace(exclamationPattern, () => {
+        if (toggle) {
+            toggle = false;
+            return "[[";
+        } else {
+            toggle = true;
+            return "]]";
+        }
+    });
+
+    return transformedString;
+  }

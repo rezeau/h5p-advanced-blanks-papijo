@@ -4,7 +4,7 @@ import { Snippet } from "../models/snippet";
 import { ISettings } from "../services/settings";
 import { H5PLocalization } from "./localization";
 import { Unrwapper } from '../helpers/unwrapper';
-import { checkBalancedBrackets } from "../../lib/helpers";
+import { checkBalancedBrackets, replaceDoubleExclamations, checkBalancedHighlightMarkers } from "../../lib/helpers";
 
 export interface IDataRepository {
   getBlanks(): Blank[];
@@ -29,7 +29,21 @@ export class H5PDataRepository implements IDataRepository {
    * Returns the blank text of the cloze (as HTML markup).
    */
   getClozeText(): string {
-    return this.h5pConfigData.content.blanksText;
+    // Replace !!*!! old highlighted markers with new [[*]] markers.
+    const clozeText = replaceDoubleExclamations(this.h5pConfigData.content.blanksText);
+    const checkHighlightMarkers = checkBalancedHighlightMarkers(clozeText);
+    if (checkHighlightMarkers !== '') {
+      // Remove the "Check" button from interface.
+      const element = document.querySelector('.h5p-question-check-answer');
+      if (element) {
+        (element as HTMLElement).style.display = 'none';
+      }
+      // IMPORTANT: always put "ERROR" at the very beginning of this message.
+      return 'ERROR in your Blanks text:' + checkHighlightMarkers + 'Your <span class="highlighted unpaired">highlight delimiters</span> are not correctly balanced';
+    }
+    else {
+      return this.h5pConfigData.content.blanksText;
+    }
   }
 
   // TODO: remove or implement
@@ -70,7 +84,7 @@ export class H5PDataRepository implements IDataRepository {
             unBalancedBrackets.push('\nBlank # ' + (i + 1), checkBrackets);
           }
           if (unBalancedBrackets.length !== 0) {
-            alert ('ERROR!!! Your round or square brackets are not correctly balanced in the following regular expression(s): \n' + unBalancedBrackets.join('\n'));
+            alert('ERROR- Your round or square brackets are not correctly balanced in the following regular expression(s): \n' + unBalancedBrackets.join('\n'));
             throw new Error('Round or square brackets not correctly balanced in your Regular Expressions');
           }
         }
