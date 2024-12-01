@@ -45,7 +45,7 @@ export function checkBalancedBrackets(alternatives) {
   if (balancedBrackets) {
     return null;
   }
-  return wrongAlternatives.join('\n');
+  return wrongAlternatives.join('<br>');
 }
 
 /* Check that highlighted words markers are correctly balanced: [[...]] */

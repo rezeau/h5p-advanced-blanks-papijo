@@ -33,13 +33,9 @@ export class H5PDataRepository implements IDataRepository {
     const clozeText = replaceDoubleExclamations(this.h5pConfigData.content.blanksText);
     const checkHighlightMarkers = checkBalancedHighlightMarkers(clozeText);
     if (checkHighlightMarkers !== '') {
-      // Remove the "Check" button from interface.
-      const element = document.querySelector('.h5p-question-check-answer');
-      if (element) {
-        (element as HTMLElement).style.display = 'none';
-      }
-      // IMPORTANT: always put "ERROR" at the very beginning of this message.
-      return 'ERROR in your Blanks text:' + checkHighlightMarkers + 'Your <span class="highlighted unpaired">highlight delimiters</span> are not correctly balanced';
+      this.settings.highlightMarkersError = true;
+      this.settings.highlightMarkersErrorMessage = 'ERROR in your Blanks text:' + checkHighlightMarkers + 'Your <span class="highlighted unpaired">highlight delimiters</span> are not correctly balanced';
+      return '';
     }
     else {
       return this.h5pConfigData.content.blanksText;
@@ -81,11 +77,11 @@ export class H5PDataRepository implements IDataRepository {
           }
           const checkBrackets = checkBalancedBrackets(incorrectAnswersList);
           if (checkBrackets !== null) {
-            unBalancedBrackets.push('\nBlank # ' + (i + 1), checkBrackets);
+            unBalancedBrackets.push('<em>Blank # ' + (i + 1) + ' ⇒ ' + correctText + '</em>', '<span class="highlighted">'+ checkBrackets + '</span>');
           }
           if (unBalancedBrackets.length !== 0) {
-            alert('ERROR- Your round or square brackets are not correctly balanced in the following regular expression(s): \n' + unBalancedBrackets.join('\n'));
-            throw new Error('Round or square brackets not correctly balanced in your Regular Expressions');
+            this.settings.regexpError = true;
+            this.settings.regexpErrorMessage = this.h5pConfigData.content.blanksText + 'ERROR- Your round or square brackets are not correctly balanced in the following Incorrect answers <span class="highlighted">regular expression(s)</span>: <br>' + unBalancedBrackets.join('<br>') + '<br><br>';
           }
         }
       }

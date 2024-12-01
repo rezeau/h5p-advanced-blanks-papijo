@@ -17,6 +17,10 @@ export interface ISettings {
   confirmCheckDialog: boolean;
   confirmRetryDialog: boolean;
   disableImageZooming: boolean;
+  regexpError: boolean;
+  regexpErrorMessage: string;
+  highlightMarkersError: boolean;
+  highlightMarkersErrorMessage: string;
 }
 
 export class H5PSettings implements ISettings {
@@ -36,7 +40,10 @@ export class H5PSettings implements ISettings {
   public confirmCheckDialog: boolean = false;
   public confirmRetryDialog: boolean = false;
   public disableImageZooming: boolean = false;
-  
+  public regexpError: boolean = false;
+  public regexpErrorMessage: string = '';
+  public highlightMarkersError: boolean = false;
+  public highlightMarkersErrorMessage: string = '';
 
   constructor(h5pConfigData) {
     if (h5pConfigData.behaviour.mode === 'selection') {

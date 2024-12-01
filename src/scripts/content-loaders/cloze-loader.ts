@@ -22,9 +22,18 @@ export class ClozeLoader {
     let blanksInstances: Blank[] = [];
     // Replace !!*!! old highlighted markers with new [[*]] markers.
     html = replaceDoubleExclamations(html);
-    // If checkHighlightMarkers function has detected pairing error, then skip creating question creation.
-    const isOKhtml = !(html.startsWith("ERROR"));
-    if (isOKhtml) {
+
+    const highlightMarkersError = blanks[0]['settings']['highlightMarkersError'];
+    const regexpError = blanks[0]['settings']['regexpError'];
+    if (regexpError || highlightMarkersError) {
+      html = blanks[0]['settings']['regexpErrorMessage'] + blanks[0]['settings']['highlightMarkersErrorMessage'];
+      // Remove the "Check" button from interface.
+      const element = document.querySelector('.h5p-question-check-answer');
+      if (element) {
+        (element as HTMLElement).style.display = 'none';
+      }
+    }
+    if (!highlightMarkersError && !regexpError) {
       html = ClozeLoader.normalizeBlankMarkings(html);
       const conversionResult = ClozeLoader.convertMarkupToSpans(html, blanks);
       html = conversionResult.html;
