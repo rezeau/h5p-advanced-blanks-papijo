@@ -56,6 +56,11 @@
     cursor: pointer;
 }
 
+:not(.has-tip).blank.has-tip button {
+    cursor: pointer;
+    display: none;
+}
+
 
 /* Select mode */
 
@@ -212,42 +217,24 @@ select.h5p-text-input {
     }
 }
 
-
 /* Others */
 
 .h5p-advanced-blanks .invisible {
     visibility: collapse;
 }
 
-
 /* Tips */
 /* papi Jo position tip in the top right corner */
+
 .h5p-advanced-blanks .h5p-tip-container {
   position: absolute;
   transform: translateY(-50%);
   right: 0em;
-  top: 0.7em;
-}
-
-.h5p-advanced-blanks .joubel-tip-container {
-  display: inline;
-  padding-top: 6px;
+  top: 0.4em;
 }
 
 .h5p-advanced-blanks .blank.has-tip:not(.correct):not(.error):not(.retry):not(.showing-solution) .h5p-text-input {
     padding-right: 2.25em;
-}
-/* papi Jo these settings do not seem necessary */
-.h5p-advanced-blanks .blank.has-tip.correct .h5p-input-wrapper:after,
-.h5p-advanced-blanks .blank.has-tip.error .h5p-input-wrapper:after,
-.h5p-advanced-blanks .blank.has-tip.retry .h5p-input-wrapper:after {
-    //right: 2.25em;
-}
-
-.h5p-advanced-blanks .blank.correct.has-tip .h5p-text-input,
-.h5p-advanced-blanks .blank.error.has-tip .h5p-text-input,
-.h5p-advanced-blanks .blank.retry.has-tip .h5p-text-input {
-    //padding-right: 3.5em;
 }
 
 /* improves appearance of h5p tip shadows */
@@ -278,13 +265,6 @@ select.h5p-text-input {
     perspective: 1000px;
 }
 
-.h5p-advanced-blanks .h5p-advanced-blanks-type-mode .blank.has-pending-feedback .h5p-input-wrapper:before {
-    position: absolute;
-    left: -0.4em;
-    top: -0.7em;
-    content: "\f05a";
-}
-
 .h5p-advanced-blanks .blank.error.has-pending-feedback button.h5p-notification,
 .h5p-advanced-blanks .blank.error.has-pending-feedback .h5p-input-wrapper:before {
     color: #b71c1c;
@@ -299,6 +279,10 @@ select.h5p-text-input {
 .h5p-advanced-blanks .blank.correct.has-pending-feedback button.h5p-notification,
 .h5p-advanced-blanks .blank.correct.has-pending-feedback .h5p-input-wrapper:before {
     color: #267d53;
+}
+
+.h5p-advanced-blanks .hide {
+  display: none;
 }
 
 @keyframes shake {

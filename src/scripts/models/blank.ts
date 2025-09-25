@@ -208,6 +208,7 @@ export class Blank extends ClozeElement {
       this.enteredText = this.correctAnswers[0].alternatives[0];
     }
     this.setAnswerState(MessageType.ShowSolution);
+
   }
 
   public onFocused() {
@@ -368,7 +369,7 @@ export class Blank extends ClozeElement {
   }
 
   /**
-   * Sets the boolean properties isCorrect, is Error and isRetry according to thepassed  messageType.
+   * Sets the boolean properties isCorrect, is Error, isRetry and isShowingSolution according to the passed  messageType.
    * @param messageType 
    */
   private setAnswerState(messageType: MessageType) {
@@ -406,10 +407,9 @@ export class Blank extends ClozeElement {
    * Displays the hint in the tooltip.
    */
   public showHint() {
-    if (this.isShowingSolution || this.isCorrect)
+    if (this.isShowingSolution || this.isCorrect) {
       return;
-
-    this.removeTooltip();
+    }
     if (this.hint && this.hint.text !== "") {
       this.displayTooltip(this.hint.text, MessageType.Retry, false);
       if (this.hint.highlightedElement) {

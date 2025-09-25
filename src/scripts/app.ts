@@ -86,11 +86,9 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): Inst
 
     /**
     * Overrides the attach method of the superclass (H5P.Question) and calls it
-    * at the same time. (equivalent to super.attach($container)).
-    * This is necessary, as Ractive needs to be initialized with an existing DOM
-    * element. DOM elements are created in H5P.Question.attach, so initializing
-    * Ractive in registerDomElements doesn't work.
+    * at the same time. (equivalent to super.attach($container)).    * 
     */
+    
     this.attach = ((original) => {
       return ($container) => {
         original($container);
@@ -103,6 +101,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): Inst
         }
       }
     })(this.attach);
+    
   }
 
   /**

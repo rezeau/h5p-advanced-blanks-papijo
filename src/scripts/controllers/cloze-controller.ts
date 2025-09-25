@@ -10,10 +10,8 @@ import { Highlight } from "../models/highlight";
 import { Blank } from "../models/blank";
 import { Correctness } from '../models/answer';
 
-import highlightTemplate from '../views/highlight.ractive.html';
-import blankTemplate from '../views/blank.ractive.html';
-
-import * as RactiveEventsKeys from '../../lib/ractive-events-keys';
+import BlankView from '../views/blank-view';
+import HighlightView from '../views/highlight-view';
 
 interface ScoreChanged {
   (score: number, maxScore: number): void;
@@ -47,9 +45,9 @@ export class ClozeController {
   public onTyped: Typed;
   public onTextChanged: TextChanged;
 
-  // Storage of the ractive objects that link models and views
-  private highlightRactives: { [id: string]: Ractive.Ractive } = {};
-  private blankRactives: { [id: string]: Ractive.Ractive } = {};
+  private blankViews: { [id: string]: BlankView } = {};
+  private highlightsViews: { [id: string]: HighlightView } = {};
+
 
   public get maxScore(): number {
     return this.cloze.blanks.length;
@@ -105,18 +103,12 @@ export class ClozeController {
   constructor(private repository: IDataRepository, private settings: ISettings, private localization: H5PLocalization, private MessageService: MessageService) {
   }
 
-  /**
-   * Sets up all blanks, the cloze itself and the ractive bindings.
-   * @param  {HTMLElement} root
-   */
+
   initialize(root: HTMLElement, jquery: JQuery) {
     this.jquery = jquery;
     this.isSelectCloze = this.settings.clozeType === ClozeType.Select ? true : false;
 
     const blanks = this.repository.getBlanks();
-
-    // Stop ractive debug mode
-    Ractive.DEBUG = false;
 
     if (this.isSelectCloze && this.settings.selectAlternatives === SelectAlternatives.All) {
       for (const blank of blanks) {
@@ -132,7 +124,7 @@ export class ClozeController {
 
     const containers = this.createAndAddContainers(root);
     containers.cloze.innerHTML = this.cloze.html;
-    this.createRactiveBindings();
+    this.createViews();
   }
 
   checkAll = () => {
@@ -219,7 +211,7 @@ export class ClozeController {
     this.cloze.showSolutions();
     this.refreshCloze();
   }
-
+/*
   private createAndAddContainers(addTo: HTMLElement): { cloze: HTMLDivElement } {
     const clozeContainerElement = document.createElement('div');
     clozeContainerElement.id = 'h5p-cloze-container';
@@ -229,49 +221,55 @@ export class ClozeController {
       cloze: clozeContainerElement
     };
   }
+*/
 
-  private createHighlightBinding(highlight: Highlight) {
-    this.highlightRactives[highlight.id] = new Ractive({
-      el: '#container_' + highlight.id,
-      template: highlightTemplate,
-      data: {
-        object: highlight
-      }
-    });
+  private createAndAddContainers(addTo: HTMLElement): { cloze: HTMLDivElement } {
+    const clozeContainerElement = document.createElement('div');
+    clozeContainerElement.id = 'h5p-cloze-container';
+    if (this.settings.clozeType === ClozeType.Select) {
+      clozeContainerElement.className = 'h5p-advanced-blanks-select-mode';
+    } else {
+      clozeContainerElement.className = 'h5p-advanced-blanks-type-mode';
+    }
+    addTo.appendChild(clozeContainerElement);
+
+    return {
+      cloze: clozeContainerElement
+    };
+  }
+  
+  private createHighlightView(highlight: Highlight) {
+    const highlightView = new HighlightView(highlight);
+    this.highlightsViews[highlight.id] = highlightView;
+
+    const parent = document.querySelector(`#container_${highlight.id}`);
+    parent?.appendChild(highlightView.getDOM());
   }
 
-  private createBlankBinding(blank: Blank) {
-    const ractive = new Ractive({
-      el: '#container_' + blank.id,
-      template: blankTemplate,
-      data: {
-        isSelectCloze: this.isSelectCloze,
-        blank: blank
-      },
-      events: {
-        enter: RactiveEventsKeys.enter,
-        escape: RactiveEventsKeys.escape,
-        anykey: RactiveEventsKeys.anykey
-      }
+  private createBlankView(blank: Blank) {
+    const blankView = new BlankView(blank, this.isSelectCloze, {
+      requestCloseTooltip: this.requestCloseTooltip,
+      checkBlank: this.checkBlank,
+      textTyped: this.textTyped,
+      focus: this.focus,
+      showHint: this.showHint,
+      displayFeedback: this.displayFeedback,
+      textChanged: this.onTextChanged
     });
-    ractive.on("checkBlank", this.checkBlank);
-    ractive.on("showHint", this.showHint);
-    ractive.on("textTyped", this.textTyped);
-    ractive.on("textChanged", this.onTextChanged);
-    ractive.on("closeMessage", this.requestCloseTooltip);
-    ractive.on("focus", this.focus);
-    ractive.on("displayFeedback", this.displayFeedback);
 
-    this.blankRactives[blank.id] = ractive;
+    this.blankViews[blank.id] = blankView;
+
+    const parent = document.querySelector(`#container_${blank.id}`);
+    parent?.appendChild(blankView.getDOM());
   }
 
-  private createRactiveBindings() {
+  private createViews() {
     for (const highlight of this.cloze.highlights) {
-      this.createHighlightBinding(highlight);
+      this.createHighlightView(highlight);
     }
 
     for (const blank of this.cloze.blanks) {
-      this.createBlankBinding(blank);
+      this.createBlankView(blank);
     }
   }
 
@@ -279,18 +277,23 @@ export class ClozeController {
    * Updates all views of highlights and blanks. Can be called when a model
    * was changed
    */
+
   private refreshCloze() {
     for (const highlight of this.cloze.highlights) {
-      const highlightRactive = this.highlightRactives[highlight.id];
-      highlightRactive.set("object", highlight);
+      const highlightView = this.highlightsViews[highlight.id];
+      highlightView?.set(highlight);
     }
 
     for (const blank of this.cloze.blanks) {
-      const blankRactive = this.blankRactives[blank.id];
+      const blankView = this.blankViews[blank.id];
       let tickSpacer = 0;
       if (blank.isCorrect || blank.isShowingSolution) {
         tickSpacer = Number(blank.isCorrect) * 1.5;
+        if (blank.hasHint) {
+          tickSpacer += 2; 
+        }
         blank.currTextLength = blank.enteredText.length + tickSpacer;
+        
       } else  {
         if (blank.enteredText) {
           // Auto grow input field to accomodate entered text!
@@ -302,9 +305,10 @@ export class ClozeController {
           blank.currTextLength = blank.minTextLength;
         }
       }
-      blankRactive.set("blank", blank);
+      blankView?.set(blank);
     }
   }
+
 
   private checkAndNotifyCompleteness = (): boolean => {
     if (this.onScoreChanged)

@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "eslint": "eslint src/**/",
-    "build": "webpack --mode=production && [ ! -e ./dist/ractive.min.js ] && cp node_modules/ractive/ractive.min.js ./dist",
+    "build": "webpack --mode=production",
     "watch": "webpack --mode=development --watch"
   },
   "repository": {
@@ -24,27 +24,22 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.18.9",
     "@babel/plugin-transform-object-assign": "^7.18.6",
     "@babel/preset-env": "^7.18.10",
-    "@eslint/js": "^9.15.0",
+    "@eslint/js": "^9.36.0",
     "@types/diff": "^5.0.3",
     "@types/jquery": "^3.5.16",
-    "@types/ractive": "^0.7.27",
     "autoprefixer": "^10.4.14",
     "ava": "^4.3.3",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
     "diff": "^5.1.0",
-    "eslint": "^9.15.0",
+    "eslint": "^8.57.1",
     "html-loader": "^4.2.0",
     "postcss": "^8.4.31",
     "postcss-loader": "^7.2.4",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
-    "typescript-eslint": "^8.15.0",
     "webpack": "^5.94.0",
     "webpack-cli": "^4.10.0"
-  },
-  "dependencies": {
-    "ractive": "^1.4.2"
   }
 }

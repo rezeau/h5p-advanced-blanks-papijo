@@ -26,11 +26,11 @@ export function checkBalancedBrackets(alternatives) {
         switch (alternative[$i]) {
             case '(': parensOpen++;
               break;
-            case ')': if (parensOpen) {parensOpen--;} else{parensClose++};
+            case ')': if (parensOpen) {parensOpen--;} else{parensClose++}
               break;
             case '[': sqbracketsOpen++;
               break;
-            case ']': if (sqbracketsOpen) {sqbracketsOpen--} else{sqbracketsClose++};
+            case ']': if (sqbracketsOpen) {sqbracketsOpen--} else{sqbracketsClose++}
               break;
             default:
               break;
