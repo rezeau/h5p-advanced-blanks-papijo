@@ -20,7 +20,7 @@ const XAPI_ALTERNATIVE_EXTENSION = 'https://h5p.org/x-api/alternatives';
 const XAPI_CASE_SENSITIVITY = 'https://h5p.org/x-api/case-sensitivity';
 const XAPI_REPORTING_VERSION_EXTENSION = 'https://h5p.org/x-api/h5p-reporting-version';
 
-export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): InstanceType<typeof H5P.Question> }) {
+export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;}) {
 
   private clozeController: ClozeController;
   private repository: IDataRepository;
@@ -31,7 +31,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): Inst
   private jQuery;
 
   private contentId: string;
-  private previousState: object;
+  private previousState: any;
   private state: States;
 
   /**
@@ -46,7 +46,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): Inst
    * @param {string} contentId
    * @param {object} contentData
    */
-  constructor(config: object, contentId: string, contentData) {
+  constructor(config: any, contentId: string, contentData: any = {}) {
     super();
 
     // Set mandatory default values for editor widgets that create content type instances

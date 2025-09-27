@@ -103,7 +103,10 @@ export class ClozeController {
   constructor(private repository: IDataRepository, private settings: ISettings, private localization: H5PLocalization, private MessageService: MessageService) {
   }
 
-
+  /**
+   * Sets up all blanks, the cloze itself and the views.
+   * @param  {HTMLElement} root
+   */
   initialize(root: HTMLElement, jquery: JQuery) {
     this.jquery = jquery;
     this.isSelectCloze = this.settings.clozeType === ClozeType.Select ? true : false;
@@ -211,17 +214,6 @@ export class ClozeController {
     this.cloze.showSolutions();
     this.refreshCloze();
   }
-/*
-  private createAndAddContainers(addTo: HTMLElement): { cloze: HTMLDivElement } {
-    const clozeContainerElement = document.createElement('div');
-    clozeContainerElement.id = 'h5p-cloze-container';
-    addTo.appendChild(clozeContainerElement);
-
-    return {
-      cloze: clozeContainerElement
-    };
-  }
-*/
 
   private createAndAddContainers(addTo: HTMLElement): { cloze: HTMLDivElement } {
     const clozeContainerElement = document.createElement('div');
@@ -327,7 +319,7 @@ export class ClozeController {
     return this.cloze.serialize();
   }
 
-  public deserializeCloze(data: object): boolean {
+  public deserializeCloze(data: any): boolean {
     if (!this.cloze || !data)
       return false;
     this.cloze.deserialize(data);
