@@ -166,7 +166,10 @@ export class ClozeController {
   requestCloseTooltip = (event, blank: Blank) => {
     blank.removeTooltip();
     this.refreshCloze();
-    this.jquery.find("#" + blank.id).focus();
+    // Only refocus if Tab was NOT pressed
+    if (event.key !== 'Tab') {
+      this.jquery.find("#" + blank.id).focus();
+    }
   }
 
   checkBlank = (event, blank: Blank, cause: string) => {

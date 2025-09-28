@@ -69,6 +69,14 @@ export default class BlankView {
     this.tipButton.addEventListener('click', (event: MouseEvent) => {
       this.callbacks.showHint(event, blank);
     });
+    
+    this.tipButton.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key === 'Tab' || event.key === 'Escape') {
+          this.callbacks.requestCloseTooltip(event, blank);
+      }
+    });
+
+
     tipContainer.append(this.tipButton);
 
     const joubelTipContainer = document.createElement('span');
