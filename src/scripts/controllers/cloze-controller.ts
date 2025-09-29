@@ -50,7 +50,9 @@ export class ClozeController {
 
 
   public get maxScore(): number {
-    return this.cloze.blanks.length;
+    if (this.cloze) {
+      return this.cloze.blanks.length;
+    }
   }
 
   /**
