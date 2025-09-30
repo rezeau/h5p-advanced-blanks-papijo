@@ -260,6 +260,11 @@ select.h5p-text-input {
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
+    position: relative;
+    right: -10px;
+    bottom: 10px;
+    margin-left: -10px;
+    z-index: 10;
 }
 
 .h5p-advanced-blanks .blank.error.has-pending-feedback button.h5p-notification,
