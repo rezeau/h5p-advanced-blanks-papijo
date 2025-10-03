@@ -94,27 +94,6 @@ export class Blank extends ClozeElement {
   }
 
   /**
-   * Returns how many characters the input box must have be to allow for all correct answers.
-   */
-  // TODO: refactor
-  private calculateMinTextLength(): void {
-    const answers: string[] = [];
-    for (const correctAnswer of this.correctAnswers) {
-      answers.push(getLongestString(correctAnswer.alternatives));
-    }
-
-    if (this.settings.clozeType === ClozeType.Select) {
-      for (const incorrectAnswer of this.incorrectAnswers) {
-        answers.push(getLongestString(incorrectAnswer.alternatives));
-      }
-    }
-
-    const longestAnswer = getLongestString(answers);
-    const l = longestAnswer.length;
-    this.minTextLength = Math.max(10, l - (l % 10) + 10);
-  }
-
-  /**
    * Creates a list of choices from all alternatives provided by
    * the correct and incorrect answers.
    */
