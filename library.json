@@ -3,7 +3,7 @@
   "description": "Fill the blanks exercise with individual feedback (papi Jo version)",
   "majorVersion": 1,
   "minorVersion": 3,
-  "patchVersion": 0,
+  "patchVersion": 1,
   "runnable": 1,
   "authors": "S. Rettig & Joseph Rézeau (papi Jo)",
   "license": "MIT",

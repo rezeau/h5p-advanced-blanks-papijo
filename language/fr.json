@@ -23,7 +23,7 @@
         {
           "label": "Texte à trous",
           "important": {
-            "description": "<ul><li>Tutoriel et exemples sur le site Moodle/H5P de Papi Jo ici:  tinyurl.com/blanks-fr</li><li>Les blancs doivent être signalés par ____ (trois ou plus traits de soulignement).</li><li>N'insérez pas les solutions dans le texte.</li></ul>",
+            "description": "<ul><li>Tutoriel et Exemples: <a href=\"http://www.h5p.rezeau.org\" target=\"_blank\" rel=\"noopener\">Le site H5P de papi Jo</a></li><li>Les blancs doivent être signalés par ____ (trois ou plus traits de soulignement).</li><li>N'insérez pas les solutions dans le texte.</li></ul>",
             "example": "J'ai ____ voulu visiter la Bretagne."
           }
         },
