@@ -10,7 +10,7 @@
   "machineName": "H5P.AdvancedBlanksPapiJo",
   "coreApi": {
     "majorVersion": 1,
-    "minorVersion": 6
+    "minorVersion": 28
   },
   "embedTypes": [
     "iframe"
@@ -35,6 +35,11 @@
       "machineName": "H5P.JoubelUI",
       "majorVersion": 1,
       "minorVersion": 3
+    },
+    {
+      "machineName": "H5P.Components",
+      "majorVersion": 1,
+      "minorVersion": 0
     }
   ],
   "editorDependencies": [

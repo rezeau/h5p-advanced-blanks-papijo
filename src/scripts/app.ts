@@ -211,7 +211,10 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
     if (!this.settings.autoCheck) {
       // Check answer button
       this.addButton('check-answer', this.localization.getTextFromLabel(LocalizationLabels.checkAllButton),
-        this.onCheckAnswer, true, {}, {
+        this.onCheckAnswer, true, {
+          'aria-label': this.localization.getTextFromLabel(LocalizationLabels.checkAllButton),
+          'class' : 'h5p-theme-button h5p-theme-primary-cta h5p-theme-check',
+        }, {
         confirmationDialog: {
           enable: this.settings.confirmCheckDialog,
           l10n: this.localization.getObjectForStructure(LocalizationStructures.confirmCheck),
@@ -225,12 +228,18 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
 
     // Show solution button
     this.addButton('show-solution', this.localization.getTextFromLabel(LocalizationLabels.showSolutionButton),
-      this.onShowSolution, this.settings.enableSolutionsButton);
+      this.onShowSolution, true, {
+          'aria-label': this.localization.getTextFromLabel(LocalizationLabels.retryButton),
+          'class' : 'h5p-theme-button h5p-theme-primary-cta h5p-theme-retry',
+        };
 
     // Try again button
     if (this.settings.enableRetry === true) {
       this.addButton('try-again', this.localization.getTextFromLabel(LocalizationLabels.retryButton),
-        this.onRetry, true, {}, {
+        this.onRetry, true, {
+          'aria-label': this.localization.getTextFromLabel(LocalizationLabels.retryButton),
+          'class' : 'h5p-theme-button h5p-theme-primary-cta h5p-theme-retry',
+        }, {
         confirmationDialog: {
           enable: this.settings.confirmRetryDialog,
           l10n: this.localization.getObjectForStructure(LocalizationStructures.confirmRetry),
