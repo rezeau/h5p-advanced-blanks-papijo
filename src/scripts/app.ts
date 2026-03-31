@@ -21,7 +21,6 @@ const XAPI_CASE_SENSITIVITY = 'https://h5p.org/x-api/case-sensitivity';
 const XAPI_REPORTING_VERSION_EXTENSION = 'https://h5p.org/x-api/h5p-reporting-version';
 
 export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;}) {
-
   private clozeController: ClozeController;
   private repository: IDataRepository;
   private settings: ISettings;
@@ -64,6 +63,8 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
     this.jQuery = H5P.jQuery;
     this.contentId = contentId;
     this.contentData = contentData;
+/// todo
+    H5P.Question.call(this, 'h5p-advanced-blanks', { theme: true });
 
     const unwrapper = new Unrwapper(this.jQuery);
 
@@ -207,46 +208,73 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
 
   private registerButtons() {
     const $container = this.getH5pContainer();
-
+    //const self = this;
     if (!this.settings.autoCheck) {
       // Check answer button
-      this.addButton('check-answer', this.localization.getTextFromLabel(LocalizationLabels.checkAllButton),
-        this.onCheckAnswer, true, {
-          'aria-label': this.localization.getTextFromLabel(LocalizationLabels.checkAllButton),
-          'class' : 'h5p-theme-button h5p-theme-primary-cta h5p-theme-check',
-        }, {
-        confirmationDialog: {
-          enable: this.settings.confirmCheckDialog,
-          l10n: this.localization.getObjectForStructure(LocalizationStructures.confirmCheck),
-          instance: this,
-          $parentElement: $container,
+      this.addButton(
+        'check-answer',
+        this.localization.getTextFromLabel(LocalizationLabels.checkAllButton),
+        () => {
+          this.onCheckAnswer();
         },
-        contentData: this.contentData,
-        textIfSubmitting: this.localization.getTextFromLabel(LocalizationLabels.submitAllButton),
-      });
+        true,
+        {
+          'aria-label': this.localization.getTextFromLabel(LocalizationLabels.checkAllButton),
+        },
+        {
+          confirmationDialog: {
+            enable: this.settings.confirmCheckDialog,
+            l10n: this.localization.getObjectForStructure(LocalizationStructures.confirmCheck),
+            instance: this,
+            $parentElement: $container,
+          },
+          contentData: this.contentData,
+          textIfSubmitting: this.localization.getTextFromLabel(LocalizationLabels.submitAllButton),
+          icon: 'check',
+        }
+      );
     }
 
     // Show solution button
-    this.addButton('show-solution', this.localization.getTextFromLabel(LocalizationLabels.showSolutionButton),
-      this.onShowSolution, true, {
-          'aria-label': this.localization.getTextFromLabel(LocalizationLabels.retryButton),
-          'class' : 'h5p-theme-button h5p-theme-primary-cta h5p-theme-retry',
-        };
+    this.addButton(
+      'show-solution',
+      this.localization.getTextFromLabel(LocalizationLabels.showSolutionButton),
+      () => {
+        this.onShowSolution();
+      },
+      this.settings.enableSolutionsButton,
+      {
+        'aria-label': this.localization.getTextFromLabel(LocalizationLabels.showSolutionButton),
+      },
+      {
+        styleType: 'secondary',
+        icon: 'show-solutions',
+      }
+    );
 
-    // Try again button
+  // Try again button
     if (this.settings.enableRetry === true) {
-      this.addButton('try-again', this.localization.getTextFromLabel(LocalizationLabels.retryButton),
-        this.onRetry, true, {
+      this.addButton(
+        'try-again',
+        this.localization.getTextFromLabel(LocalizationLabels.retryButton),
+        () => {
+          this.onRetry();
+        },
+        true,
+        {
           'aria-label': this.localization.getTextFromLabel(LocalizationLabels.retryButton),
-          'class' : 'h5p-theme-button h5p-theme-primary-cta h5p-theme-retry',
-        }, {
-        confirmationDialog: {
-          enable: this.settings.confirmRetryDialog,
-          l10n: this.localization.getObjectForStructure(LocalizationStructures.confirmRetry),
-          instance: this,
-          $parentElement: $container
+        },
+        {
+          confirmationDialog: {
+            enable: this.settings.confirmRetryDialog,
+            l10n: this.localization.getObjectForStructure(LocalizationStructures.confirmRetry),
+            instance: this,
+            $parentElement: $container
+          },
+          styleType: 'secondary',
+          icon: 'retry',
         }
-      });
+      );
     }
   }
 
