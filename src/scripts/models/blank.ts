@@ -5,7 +5,7 @@ import { Message } from './message';
 import { MessageType, ClozeType, SelectAlternatives } from './enums';
 import { H5PLocalization, LocalizationLabels } from '../services/localization';
 import { ISettings } from "../services/settings";
-import { getLongestString, shuffleArray } from "../../lib/helpers";
+import { shuffleArray } from "../../lib/helpers";
 import * as jsdiff from 'diff';
 
 export class Blank extends ClozeElement {
