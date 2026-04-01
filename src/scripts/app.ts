@@ -305,8 +305,9 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
   private allowSolution =  () => {
     if (this.settings.showSolutionsRequiresInput === true 
       && !this.clozeController.allBlanksEntered) {
-        let message = this.localization.getTextFromLabel(LocalizationLabels.notFilledOutWarning)
-        this.setFeedback('<em>' + message + '</em>',,);
+        const message = this.localization.getTextFromLabel(LocalizationLabels.notFilledOutWarning)
+        const scoreText = '<em>' + message + '</em>';
+        this.setFeedback(scoreText, this.clozeController.currentScore, this.clozeController.maxScore, this.localization.getTextFromLabel(LocalizationLabels.scoreBarLabel));
         return false;
     }
     return true;
