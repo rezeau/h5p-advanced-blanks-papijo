@@ -32,5 +32,8 @@ Watch project in development mode:
 ```bash
 npm run watch
 ```
+To check the syntax:
+cd "C:\my_first_h5p_environment\libraries\H5P.AdvancedBlanksPapiJo-1.3"
+npx eslint . --ext .ts
 
 
