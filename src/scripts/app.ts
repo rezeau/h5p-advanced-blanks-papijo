@@ -64,7 +64,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
     this.contentId = contentId;
     this.contentData = contentData;
 /// todo
-    H5P.Question.call(this, 'h5p-advanced-blanks', { theme: true });
+    H5P.Question.call(this, '', { theme: true });
 
     const unwrapper = new Unrwapper(this.jQuery);
 
@@ -236,11 +236,12 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
     }
 
     // Show solution button
+    // TODO add conditional showSolutionsRequiresInput
     this.addButton(
       'show-solution',
       this.localization.getTextFromLabel(LocalizationLabels.showSolutionButton),
       () => {
-        this.onShowSolution();
+        this.showCorrectAnswers();
       },
       this.settings.enableSolutionsButton,
       {
@@ -298,11 +299,32 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
       this.moveToState(States.finished);
     }
   }
-
-  private onShowSolution = () => {
-    this.moveToState(States.showingSolutions);
-    this.clozeController.showSolutions();
-    this.showFeedback();
+  /**
+   * Check if solution is allowed. Warn user if not
+   */
+  private allowSolution =  () => {
+    if (this.settings.showSolutionsRequiresInput === true 
+      && !this.clozeController.allBlanksEntered) {
+        let message = this.localization.getTextFromLabel(LocalizationLabels.notFilledOutWarning)
+        this.setFeedback('<em>' + message + '</em>',,);
+        return false;
+    }
+    return true;
+  };
+  /**
+   * Displays the correct answers
+   * @param {boolean} [alwaysShowSolution]
+   *  Will always show solution if true
+   */
+  private showCorrectAnswers = () => {
+    if (this.allowSolution() ) {
+      this.moveToState(States.showingSolutions);
+      this.clozeController.showSolutions();
+      this.showFeedback();
+    }
+    else {
+      this.hideButton('show-solution');
+    }
   }
 
   private onRetry = () => {
@@ -327,11 +349,18 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
     this.toggleButtonVisibility(state);
   }
 
+  /**
+   * Toggle buttons dependent of state.
+   *
+   * Using CSS-rules to conditionally show/hide using the data-attribute [data-state]
+   */
   private toggleButtonVisibility(state: States) {
+    // The show solutions button is hidden if all answers are correct
     if (this.settings.enableSolutionsButton) {
       if (((state === States.checking)
         || (this.settings.autoCheck && state === States.ongoing))
-        && (!this.settings.showSolutionsRequiresInput || this.clozeController.allBlanksEntered)) {
+        ///&& !this.clozeController.allBlanksEntered
+        ) {
         this.showButton('show-solution');
       }
       else {
@@ -383,7 +412,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
   }
 
   public showSolutions = () => {
-    this.onShowSolution();
+    this.showCorrectAnswers();
     this.moveToState(States.showingSolutionsEmbedded);
   }
 
