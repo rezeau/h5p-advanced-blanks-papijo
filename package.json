@@ -36,6 +36,7 @@
     "diff": "^5.1.0",
     "eslint": "^8.57.1",
     "html-loader": "^4.2.0",
+    "jsdom": "^26.1.0",
     "postcss": "^8.4.31",
     "postcss-loader": "^7.2.4",
     "style-loader": "^3.3.1",
