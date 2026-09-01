@@ -317,8 +317,8 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
    * @param {boolean} [alwaysShowSolution]
    *  Will always show solution if true
    */
-  private showCorrectAnswers = () => {
-    if (this.allowSolution() ) {
+  private showCorrectAnswers = (alwaysShowSolution: boolean = false) => {
+    if (alwaysShowSolution || this.allowSolution()) {
       this.moveToState(States.showingSolutions);
       this.clozeController.showSolutions();
       this.showFeedback();
@@ -413,7 +413,7 @@ export default class AdvancedBlanksPapiJo extends (H5P.Question as { new(): any;
   }
 
   public showSolutions = () => {
-    this.showCorrectAnswers();
+    this.showCorrectAnswers(true);
     this.moveToState(States.showingSolutionsEmbedded);
   }
 

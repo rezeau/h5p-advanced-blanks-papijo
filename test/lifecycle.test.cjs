@@ -210,39 +210,33 @@ test.serial('auto-check re-evaluates restored state during attach', t => {
   t.is(instance.__events.filter(event => typeof event === 'object' && event.verb === 'answered').length, 1);
 });
 
-test.serial('embedded showSolutions disables blanks and hides all action buttons when solutions are allowed', t => {
-  const instance = attach({ behaviour: { showSolutionsRequiresInput: false } });
+test.serial('embedded showSolutions preserves correct input and replaces incorrect input', t => {
+  const instance = attach();
+  const [first, second] = inputs();
+  first.value = 'tan';
+  second.value = 'wrong';
+
+  instance.showSolutions();
+
+  t.deepEqual(instance.getCurrentState(), ['tan', 'swift']);
+  t.is(instance.getScore(), 1);
+  t.true(inputs().every(input => input.disabled));
+  t.true(instance.__buttons['check-answer'].element.hidden);
+  t.true(instance.__buttons['show-solution'].element.hidden);
+  t.true(instance.__buttons['try-again'].element.hidden);
+});
+
+test.serial('embedded showSolutions bypasses learner-facing input restrictions', t => {
+  const instance = attach();
 
   instance.showSolutions();
 
   t.deepEqual(instance.getCurrentState(), ['brown', 'swift']);
+  t.true(inputs().every(input => input.disabled));
   t.is(instance.getScore(), 0);
-  t.true(inputs().every(input => input.disabled));
   t.true(instance.__buttons['check-answer'].element.hidden);
   t.true(instance.__buttons['show-solution'].element.hidden);
   t.true(instance.__buttons['try-again'].element.hidden);
-});
-
-test.serial('embedded showSolutions preserves the input requirement while still hiding all controls', t => {
-  const instance = attach();
-
-  instance.showSolutions();
-
-  t.deepEqual(instance.getCurrentState(), ['', '']);
-  t.true(inputs().every(input => !input.disabled));
-  t.true(instance.__buttons['check-answer'].element.hidden);
-  t.true(instance.__buttons['show-solution'].element.hidden);
-  t.true(instance.__buttons['try-again'].element.hidden);
-  t.deepEqual(instance.__feedback.slice(1, 3), [0, 2]);
-});
-
-test.serial.failing('embedded showSolutions should bypass learner-facing input restrictions', t => {
-  const instance = attach();
-
-  instance.showSolutions();
-
-  t.deepEqual(instance.getCurrentState(), ['brown', 'swift']);
-  t.true(inputs().every(input => input.disabled));
 });
 
 test.serial('xAPI definition marks alternatives and reporting version', t => {
