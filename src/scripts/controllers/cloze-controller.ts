@@ -129,7 +129,7 @@ export class ClozeController {
 
     const containers = this.createAndAddContainers(root);
     containers.cloze.innerHTML = this.cloze.html;
-    this.createViews();
+    this.createViews(root);
   }
 
   checkAll = () => {
@@ -235,15 +235,15 @@ export class ClozeController {
     };
   }
   
-  private createHighlightView(highlight: Highlight) {
+  private createHighlightView(root: HTMLElement, highlight: Highlight) {
     const highlightView = new HighlightView(highlight);
     this.highlightsViews[highlight.id] = highlightView;
 
-    const parent = document.querySelector(`#container_${highlight.id}`);
+    const parent = root.querySelector(`#container_${highlight.id}`);
     parent?.appendChild(highlightView.getDOM());
   }
 
-  private createBlankView(blank: Blank) {
+  private createBlankView(root: HTMLElement, blank: Blank) {
     const blankView = new BlankView(blank, this.isSelectCloze, {
       requestCloseTooltip: this.requestCloseTooltip,
       checkBlank: this.checkBlank,
@@ -256,17 +256,17 @@ export class ClozeController {
 
     this.blankViews[blank.id] = blankView;
 
-    const parent = document.querySelector(`#container_${blank.id}`);
+    const parent = root.querySelector(`#container_${blank.id}`);
     parent?.appendChild(blankView.getDOM());
   }
 
-  private createViews() {
+  private createViews(root: HTMLElement) {
     for (const highlight of this.cloze.highlights) {
-      this.createHighlightView(highlight);
+      this.createHighlightView(root, highlight);
     }
 
     for (const blank of this.cloze.blanks) {
-      this.createBlankView(blank);
+      this.createBlankView(root, blank);
     }
   }
 

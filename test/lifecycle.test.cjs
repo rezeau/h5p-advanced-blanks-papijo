@@ -19,6 +19,18 @@ function attach(configOverrides = {}, contentData = {}) {
   return instance;
 }
 
+function attachDetached(configOverrides = {}, contentData = {}) {
+  installDom();
+  const detachedRoot = document.createElement('div');
+  detachedRoot.className = 'h5p-content';
+  detachedRoot.dataset.contentId = '42';
+  const instance = new AdvancedBlanksPapiJo(baseConfig(configOverrides), '42', contentData);
+
+  instance.attach(H5P.jQuery(detachedRoot));
+
+  return { detachedRoot, instance };
+}
+
 function inputs() {
   return [...document.querySelectorAll('input.h5p-text-input')];
 }
@@ -51,6 +63,38 @@ test.serial('construction and attach render surrounding markup, highlights, blan
     instance.__buttons['check-answer'].options.confirmationDialog.$parentElement.get(0),
     document.querySelector('.h5p-container')
   );
+});
+
+test.serial('typing mode renders blank inputs while the component root is detached', t => {
+  const { detachedRoot } = attachDetached();
+  const renderedInputs = [...detachedRoot.querySelectorAll('input.h5p-text-input')];
+
+  t.false(detachedRoot.isConnected);
+  t.is(renderedInputs.length, 2);
+  t.deepEqual(renderedInputs.map(input => input.id), ['cloze0', 'cloze1']);
+  t.is(detachedRoot.querySelector('#highlight_0').textContent, 'quick');
+  t.is(document.querySelectorAll('input.h5p-text-input').length, 0);
+
+  document.body.appendChild(detachedRoot);
+  t.true(detachedRoot.isConnected);
+  t.is(detachedRoot.querySelectorAll('input.h5p-text-input').length, 2);
+});
+
+test.serial('selection mode renders blank selects while the component root is detached', t => {
+  const { detachedRoot } = attachDetached({ behaviour: { mode: 'selection' } });
+  const renderedSelects = [...detachedRoot.querySelectorAll('select.h5p-text-input')];
+
+  t.false(detachedRoot.isConnected);
+  t.is(renderedSelects.length, 2);
+  t.deepEqual(
+    [...renderedSelects[0].options].map(option => option.textContent).sort(),
+    ['', 'brown', 'red', 'tan'].sort()
+  );
+  t.is(document.querySelectorAll('select.h5p-text-input').length, 0);
+
+  document.body.appendChild(detachedRoot);
+  t.true(detachedRoot.isConnected);
+  t.is(detachedRoot.querySelectorAll('select.h5p-text-input').length, 2);
 });
 
 test.serial('typing, Check Answer, and xAPI preserve mixed correct/incorrect state', t => {
