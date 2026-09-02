@@ -321,7 +321,7 @@ export class ClozeController {
   }
 
   public serializeCloze(): string[] {
-    return this.cloze.serialize();
+    return this.cloze ? this.cloze.serialize() : [];
   }
 
   public deserializeCloze(data: any): boolean {

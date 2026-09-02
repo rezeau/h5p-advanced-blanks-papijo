@@ -1,6 +1,6 @@
 {
   "name": "h5p-advanced-blanks-papijo",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Fill the blanks exercise with individual feedback version papijo",
   "private": true,
   "scripts": {

@@ -65,6 +65,13 @@ test.serial('construction and attach render surrounding markup, highlights, blan
   );
 });
 
+test.serial('getCurrentState is safe before attach initializes the cloze', t => {
+  installDom();
+  const instance = new AdvancedBlanksPapiJo(baseConfig(), '42');
+
+  t.deepEqual(instance.getCurrentState(), []);
+});
+
 test.serial('typing mode renders blank inputs while the component root is detached', t => {
   const { detachedRoot } = attachDetached();
   const renderedInputs = [...detachedRoot.querySelectorAll('input.h5p-text-input')];
